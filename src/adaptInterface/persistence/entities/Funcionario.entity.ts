@@ -1,12 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 
 import { CadastroClinico } from './CadastroClinico.entity';
-
-export enum FuncionarioSexo {
-  MASC = 'Masculino',
-  FEM = 'Feminino',
-  OUTRO = 'Outro',
-}
+import { FuncionarioSexoEnumModel } from 'src/domain/entities/FuncionarioModel.entity';
 
 @Entity('Funcionario')
 export class Funcionario {
@@ -33,9 +28,15 @@ export class Funcionario {
 
   @Column({
     type: 'enum',
-    enum: FuncionarioSexo,
+    enum: FuncionarioSexoEnumModel,
   })
-  sexo: FuncionarioSexo;
+  sexo: FuncionarioSexoEnumModel;
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+  })
+  senha: string;
 
   @OneToOne(
     () => CadastroClinico,
