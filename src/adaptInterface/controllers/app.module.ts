@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { DatabaseModule } from './database.module';
+
 import { AppController } from './app.controller';
 import { AppService } from '../../domain/services/app.service';
 
@@ -16,6 +17,15 @@ import { MedicamentoRegistrado } from '../persistence/entities/MedicamentoRegist
 import { ProcAceite } from '../persistence/entities/ProcAceite.entity';
 import { TipoSanguineo } from '../persistence/entities/TipoSanguineo.entity';
 import { UsuarioAdministrativo } from '../persistence/entities/UsuarioAdministrativo.entity';
+
+import { FuncionarioRepository } from '../persistence/repositories/Funcionario.repository';
+import { UsuarioAdministrativoRepository } from '../persistence/repositories/UsuarioAdministrativo.repository';
+import { CadastroClinicoRepository } from '../persistence/repositories/CadastroClinico.repository';
+
+import { AutenticacaoController } from '../autenticacao/Autenticacao.controller';
+import { ServicoAutenticacao } from '../autenticacao/Autenticacao.service';
+import { AuthTokenRepository } from '../autenticacao/AuthToken/AuthToken.repository';
+import { AuthToken } from '../autenticacao/AuthToken/AuthToken.entity';
 
 @Module({
   imports: [
@@ -34,10 +44,21 @@ import { UsuarioAdministrativo } from '../persistence/entities/UsuarioAdministra
       ProcAceite,
       TipoSanguineo,
       UsuarioAdministrativo,
+      AuthToken,
     ]),
     // HttpModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [
+    AppController,
+    AutenticacaoController,
+  ],
+  providers: [
+    AppService,
+    ServicoAutenticacao,
+    AuthTokenRepository,
+    FuncionarioRepository,
+    UsuarioAdministrativoRepository,
+    CadastroClinicoRepository,
+  ],
 })
 export class AppModule {}
