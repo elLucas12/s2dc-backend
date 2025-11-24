@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  asrh-backend:
+    image: elLucas12/s2dc-backend
+    container_name: s2dc-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - DB_HOST="127.0.0.1"
+      - DB_PORT=3306
+      - DB_USERNAME="test_user"
+      - DB_PASSWORD="test_password"
+      - DB_NAME="s2dc_data"
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=s2dc_data
+      - MYSQL_USER=test_user
+      - MYSQL_PASSWORD=test_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
