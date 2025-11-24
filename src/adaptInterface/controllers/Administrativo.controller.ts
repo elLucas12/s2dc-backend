@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { ServicoAutenticacao } from 'src/domain/services/autenticacao.service';
 import { ServicoAdministrativo } from 'src/domain/services/administrativo.service';
+import { ServicoAutenticacao } from '../autenticacao/autenticacao.service';
 
 @Controller('Administrativo')
 export class AdministrativoController {

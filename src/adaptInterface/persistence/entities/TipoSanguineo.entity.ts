@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { CadastroClinico } from './CadastroClinico.entity';
 import {
   TipoSanguineoTipoEnumModel,
-  TipoSanguineoFatorRhEnumModel 
+  TipoSanguineoFatorRhEnumModel,
 } from 'src/domain/entities/TipoSanguineoModel.entity';
 
 @Entity('TipoSanguineo')
