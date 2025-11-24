@@ -18,19 +18,26 @@ import { ProcAceite } from '../persistence/entities/ProcAceite.entity';
 import { TipoSanguineo } from '../persistence/entities/TipoSanguineo.entity';
 import { UsuarioAdministrativo } from '../persistence/entities/UsuarioAdministrativo.entity';
 
-import { FuncionarioRepository } from '../persistence/repositories/Funcionario.repository';
-import { UsuarioAdministrativoRepository } from '../persistence/repositories/UsuarioAdministrativo.repository';
 import { CadastroClinicoRepository } from '../persistence/repositories/CadastroClinico.repository';
+import { UsuarioAdministrativoRepository } from "../persistence/repositories/UsuarioAdministrativo.repository";
+import { FuncionarioRepository } from "../persistence/repositories/Funcionario.repository";
 
-import { AutenticacaoController } from '../autenticacao/Autenticacao.controller';
+// Autenticação
+import { JwtModule } from "@nestjs/jwt";
+import { PassportModule } from "@nestjs/passport";
 import { ServicoAutenticacao } from '../autenticacao/Autenticacao.service';
-import { AuthTokenRepository } from '../autenticacao/AuthToken/AuthToken.repository';
-import { AuthToken } from '../autenticacao/AuthToken/AuthToken.entity';
+import { AutenticacaoController } from '../autenticacao/Autenticacao.controller';
+import { JwtStrategy } from '../autenticacao/Jwt.strategy';
+
+import { AdministrativoController } from './Administrativo.controller';
+import { FuncionarioController } from './Funcionario.controller';
+import { ServicoAdministrativo } from 'src/domain/services/administrativo.service';
+import { ServicoFuncionarios } from 'src/domain/services/funcionarios.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // uso em serv.
+      isGlobal: true,
     }),
     DatabaseModule,
     TypeOrmModule.forFeature([
@@ -44,21 +51,28 @@ import { AuthToken } from '../autenticacao/AuthToken/AuthToken.entity';
       ProcAceite,
       TipoSanguineo,
       UsuarioAdministrativo,
-      AuthToken,
     ]),
-    // HttpModule
+    PassportModule,
+    JwtModule.register({ // TODO: Usar ConfigService para JWT_SECRET (1)
+      secret: process.env.JWT_SECRET || 'password',
+      signOptions: { expiresIn: '1h' },
+    }),
   ],
   controllers: [
     AppController,
     AutenticacaoController,
+    AdministrativoController,
+    FuncionarioController,
   ],
   providers: [
     AppService,
     ServicoAutenticacao,
-    AuthTokenRepository,
+    ServicoAdministrativo,
+    ServicoFuncionarios,
     FuncionarioRepository,
     UsuarioAdministrativoRepository,
     CadastroClinicoRepository,
+    JwtStrategy,
   ],
 })
 export class AppModule {}

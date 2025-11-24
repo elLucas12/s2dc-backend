@@ -39,7 +39,11 @@ export class FuncionarioRepository implements IFuncionarioRepository {
    * @returns Model da nova instância armazenada.
    */
   public async consultarCpf(cpf: string): Promise<FuncionarioModel> {
-    const resp = await this.funcionarios.findOneBy({cpf});
+    const resp = await this.funcionarios.findOne({
+      where: {
+        cpf: cpf,
+      },
+    });
     return FuncionarioRepository.createFromObject(resp);
   }
 
