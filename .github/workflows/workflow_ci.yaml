@@ -1,0 +1,109 @@
+name: Teste e Release (desenvolvimento)
+
+on:
+  push:
+    branches:
+      - devel
+  pull_request:
+    branches:
+      - devel
+
+env:
+  # env servidor MySQL
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_DATABASE: s2dc_data
+  MYSQL_USER: test_user
+  MYSQL_PASSWORD: test_password
+
+  # env Aplicação
+  DB_HOST: 127.0.0.1
+  DB_PORT: 3306
+  DB_USERNAME: test_user
+  DB_PASSWORD: test_password
+  DB_NAME: s2dc_data
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+      - name: Checar código do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Aguardar MySQL
+        run: |
+          sudo apt update -y
+          sudo apt-get install -y mysql-client
+          mysqladmin ping -h {{ env.DB_HOST }} -P {{ env.DB_PORT }} -u {{ env.DB_USERNAME }} -p{{ env.DB_PASSWORD }} --wait=30 --count=10
+
+      - name: Rodar testes Jest
+        run: npm test
+        env:
+          DB_HOST: ${{ env.DB_HOST }}
+          DB_PORT: ${{ env.DB_PORT }}
+          DB_USERNAME: ${{ env.DB_USERNAME }}
+          DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          DB_NAME: ${{ env.DB_NAME }}
+
+      # # Rodar testes de requisição da API
+      # - name: Rodar teste Jest e2e
+      #   run: npm test:e2e
+      #   env:
+      #     DB_HOST: ${{ env.DB_HOST }}
+      #     DB_PORT: ${{ env.DB_PORT }}
+      #     DB_USERNAME: ${{ env.DB_USERNAME }}
+      #     DB_PASSWORD: ${{ env.DB_PASSWORD }}
+      #     DB_NAME: ${{ env.DB_NAME }}
+
+  release:
+    name: Criação de Release do Código
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Último commit
+        id: get_commit_msg
+        run: |
+          COMMIT_MSG=$(gh api repos/${{ github_repository }}/commits/${{ github.sha }} --jq '.commit.message')
+          ESCAPED_MSG=$(echo "$COMMIT_MSG" | sed -z 's/\n/\\n/g')
+          echo "commit_msg=$ESCAPED_MSG" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Criando Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Atualização por ação: ${{ steps.get_commit_msg.outputs.commit_msg }}
+          draft: false
+          prerelease: false
