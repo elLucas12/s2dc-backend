@@ -1,5 +1,3 @@
-import { CadastroClinicoModel } from './CadastroClinicoModel.entity';
-
 export enum FuncionarioSexoEnumModel {
   MASC = 'Masculino',
   FEM = 'Feminino',
@@ -12,7 +10,8 @@ export class FuncionarioModel {
   cpf: string;
   ctps: string;
   sexo: FuncionarioSexoEnumModel;
-  cadastroClinico: CadastroClinicoModel;
+  cadastroClinico: number;
+  senha: string;
 
   constructor(
     id: number,
@@ -20,7 +19,8 @@ export class FuncionarioModel {
     cpf: string,
     ctps: string,
     sexo: FuncionarioSexoEnumModel,
-    cadastroClinico: CadastroClinicoModel,
+    cadastroClinico: number,
+    senha: string,
   ) {
     this.id = id;
     this.nome = nome;
@@ -28,5 +28,6 @@ export class FuncionarioModel {
     this.ctps = ctps;
     this.sexo = sexo;
     this.cadastroClinico = cadastroClinico;
+    this.senha = senha;
   }
 }

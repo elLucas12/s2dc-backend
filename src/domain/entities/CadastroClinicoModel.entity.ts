@@ -4,6 +4,7 @@ import { DoencaRegistradaModel } from './DoencaRegistradaModel.entity';
 import { MedicamentoRegistradoModel } from './MedicamentoRegistradoModel.entity';
 import { TipoSanguineoModel } from './TipoSanguineoModel.entity';
 import { ProcAceiteModel } from './ProcAceiteModel.entity';
+import { AlergiaRegistradaModel } from './AlergiaRegistradaModel.entity';
 
 export class CadastroClinicoModel {
   id: number;
@@ -16,6 +17,7 @@ export class CadastroClinicoModel {
   doencasRegistradas: DoencaRegistradaModel[];
   medicamentosRegistrados: MedicamentoRegistradoModel[];
   tiposSanguineos: TipoSanguineoModel[];
+  alergiasRegistradas: AlergiaRegistradaModel[];
 
   constructor(
     id: number,
@@ -28,6 +30,7 @@ export class CadastroClinicoModel {
     doencasRegistradas: DoencaRegistradaModel[],
     medicamentosRegistrados: MedicamentoRegistradoModel[],
     tiposSanguineos: TipoSanguineoModel[],
+    alergiasRegistradas: AlergiaRegistradaModel[],
   ) {
     this.id = id;
     this.numeroEmergencia = numeroEmergencia;
@@ -39,5 +42,6 @@ export class CadastroClinicoModel {
     this.doencasRegistradas = doencasRegistradas;
     this.medicamentosRegistrados = medicamentosRegistrados;
     this.tiposSanguineos = tiposSanguineos;
+    this.alergiasRegistradas = alergiasRegistradas;
   }
 }
