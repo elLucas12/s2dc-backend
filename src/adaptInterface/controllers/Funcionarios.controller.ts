@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { ServicoFuncionarios } from 'src/domain/services/funcionarios.service';
-import { ServicoAutenticacao } from '../autenticacao/autenticacao.service';
+import { ServicoAutenticacao } from '../autenticacao/Autenticacao.service';
 
 @Controller('Funcionarios')
 export class FuncionariosController {
