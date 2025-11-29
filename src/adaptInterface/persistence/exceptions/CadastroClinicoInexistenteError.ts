@@ -1,4 +1,4 @@
-export class FuncionarioInexistenteError extends Error {
+export class CadastroClinicoInexistenteError extends Error {
   constructor(mensagem: string, opcoes?: ErrorOptions) {
     super(mensagem, opcoes);
     this.name = this.constructor.name;

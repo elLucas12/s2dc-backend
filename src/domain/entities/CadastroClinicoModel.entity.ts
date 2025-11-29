@@ -24,7 +24,6 @@ export class CadastroClinicoModel {
     numeroEmergencia: string,
     criadoEm: Date,
     atualizadoEm: Date,
-    funcionario: FuncionarioModel,
     procAceite: ProcAceiteModel,
     cirurgiasRegistradas: CirurgiaRegistradaModel[],
     doencasRegistradas: DoencaRegistradaModel[],
@@ -36,7 +35,6 @@ export class CadastroClinicoModel {
     this.numeroEmergencia = numeroEmergencia;
     this.criadoEm = criadoEm;
     this.atualizadoEm = atualizadoEm;
-    this.funcionario = funcionario;
     this.procAceite = procAceite;
     this.cirurgiasRegistradas = cirurgiasRegistradas;
     this.doencasRegistradas = doencasRegistradas;

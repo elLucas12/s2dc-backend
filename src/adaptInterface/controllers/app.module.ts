@@ -23,16 +23,21 @@ import { UsuarioAdministrativoRepository } from "../persistence/repositories/Usu
 import { FuncionarioRepository } from "../persistence/repositories/Funcionario.repository";
 
 // Autenticação
-import { JwtModule } from "@nestjs/jwt";
-import { PassportModule } from "@nestjs/passport";
-import { ServicoAutenticacao } from '../autenticacao/Autenticacao.service';
-import { AutenticacaoController } from '../autenticacao/Autenticacao.controller';
-import { JwtStrategy } from '../autenticacao/Jwt.strategy';
+import { ServicoAutenticacao } from '../../domain/services/Autenticacao.service';
+import { AutenticacaoController } from './Autenticacao.controller';
 
 import { AdministrativoController } from './Administrativo.controller';
 import { FuncionarioController } from './Funcionario.controller';
+
 import { ServicoAdministrativo } from 'src/domain/services/administrativo.service';
 import { ServicoFuncionarios } from 'src/domain/services/funcionarios.service';
+
+import { ConsultaCadastroClinico } from 'src/application/ConsultaCadastroClinico';
+import { ConsultaUsuarioAdministrativoId } from 'src/application/ConsultaUsuarioAdministrativoId';
+import { ConsultaFuncionarioId } from 'src/application/ConsultaFuncionarioId';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from '../autenticacao/JwtAuth.guard';
+import { AutenticacaoModule } from '../autenticacao/Autenticacao.module';
 
 @Module({
   imports: [
@@ -40,6 +45,7 @@ import { ServicoFuncionarios } from 'src/domain/services/funcionarios.service';
       isGlobal: true,
     }),
     DatabaseModule,
+    AutenticacaoModule,
     TypeOrmModule.forFeature([
       AlergiaRegistrada,
       CadastroClinico,
@@ -52,11 +58,6 @@ import { ServicoFuncionarios } from 'src/domain/services/funcionarios.service';
       TipoSanguineo,
       UsuarioAdministrativo,
     ]),
-    PassportModule,
-    JwtModule.register({ // TODO: Usar ConfigService para JWT_SECRET (1)
-      secret: process.env.JWT_SECRET || 'password',
-      signOptions: { expiresIn: '1h' },
-    }),
   ],
   controllers: [
     AppController,
@@ -65,14 +66,27 @@ import { ServicoFuncionarios } from 'src/domain/services/funcionarios.service';
     FuncionarioController,
   ],
   providers: [
+    // Jwt -> autenticação global requerida
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+
+    // Serviços
     AppService,
     ServicoAutenticacao,
     ServicoAdministrativo,
     ServicoFuncionarios,
+
+    // Repositórios de entidades
     FuncionarioRepository,
     UsuarioAdministrativoRepository,
     CadastroClinicoRepository,
-    JwtStrategy,
+
+    // Objetos de aplicação (application layer)
+    ConsultaCadastroClinico,
+    ConsultaUsuarioAdministrativoId,
+    ConsultaFuncionarioId,
   ],
 })
 export class AppModule {}

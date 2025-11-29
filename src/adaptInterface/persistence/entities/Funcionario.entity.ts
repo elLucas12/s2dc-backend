@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 import { CadastroClinico } from './CadastroClinico.entity';
 import { FuncionarioSexoEnumModel } from 'src/domain/entities/FuncionarioModel.entity';
@@ -38,9 +38,9 @@ export class Funcionario {
   })
   senha: string;
 
-  @OneToOne(
-    () => CadastroClinico,
-    (cadastroClinico) => cadastroClinico.funcionario,
-  )
-  cadastroClinico: CadastroClinico;
+  @OneToMany(() => CadastroClinico, (cadastroClinico) => cadastroClinico.funcionario, {
+    eager: true,
+    nullable: true,
+  })
+  cadastrosClinicos: CadastroClinico[];
 }

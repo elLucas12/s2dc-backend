@@ -122,7 +122,6 @@ export class CadastroClinicoRepository implements ICadastroClinicoRepository {
       obj.numeroEmergencia,
       obj.criadoEm,
       obj.atualizadoEm,
-      obj.funcionario,
       obj.procAceite,
       obj.cirurgiasRegistradas,
       obj.doencasRegistradas,

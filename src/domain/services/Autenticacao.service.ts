@@ -3,10 +3,10 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 
-import { FuncionarioRepository } from '../persistence/repositories/Funcionario.repository';
+import { FuncionarioRepository } from '../../adaptInterface/persistence/repositories/Funcionario.repository';
 import { FuncionarioModel } from 'src/domain/entities/FuncionarioModel.entity';
 
-import { UsuarioAdministrativoRepository } from '../persistence/repositories/UsuarioAdministrativo.repository';
+import { UsuarioAdministrativoRepository } from '../../adaptInterface/persistence/repositories/UsuarioAdministrativo.repository';
 import { UsuarioAdministrativoModel } from 'src/domain/entities/UsuarioAdministrativoModel.entity';
 
 @Injectable()
@@ -35,7 +35,7 @@ export class ServicoAutenticacao {
     return await this.funcionarioRepository.registrar(funcionario);
   }
 
-  public async validarFuncionario(funcionario: any): Promise<any> {
+  public async validarFuncionario(funcionario: {cpf: string, senha: string}): Promise<any> {
     const funcionarioAlvo = await this.funcionarioRepository.consultarCpf(funcionario.cpf);
     if (funcionarioAlvo && await bcrypt.compare(funcionario.senha, funcionarioAlvo.senha)) {
       const { senha, ...res } = funcionarioAlvo; // (x) sem senha
@@ -43,10 +43,11 @@ export class ServicoAutenticacao {
     }
   }
 
-  public async loginFuncionario(funcionario: any): Promise<any> {
+  public async loginFuncionario(funcionario: FuncionarioModel): Promise<any> {
     const payload = {
-      username: funcionario.cpf,
-      sub: funcionario.id,
+      userid: funcionario.id,
+      userident: funcionario.cpf,
+      username: funcionario.nome,
     };
     return {
       access_token: this.jwtService.sign(payload),
@@ -64,18 +65,19 @@ export class ServicoAutenticacao {
     return await this.usuarioAdministrativoRepository.registrar(usuarioAdministrativo);
   }
 
-  public async validarUsuarioAdministrativo(usuarioAdministrativo: any): Promise<any> {
-    const usuarioAdministrativoAlvo = await this.funcionarioRepository.consultarCpf(usuarioAdministrativo.email);
+  public async validarUsuarioAdministrativo(usuarioAdministrativo: {email: string, senha: string}): Promise<any> {
+    const usuarioAdministrativoAlvo = await this.usuarioAdministrativoRepository.consultarEmail(usuarioAdministrativo.email);
     if (usuarioAdministrativoAlvo && await bcrypt.compare(usuarioAdministrativo.senha, usuarioAdministrativoAlvo.senha)) {
       const { senha, ...res } = usuarioAdministrativoAlvo; // (x) sem senha
       return res;
     }
   }
 
-  public async loginUsuarioAdministrativo(usuarioAdministrativo: any): Promise<any> {
+  public async loginUsuarioAdministrativo(usuarioAdministrativo: UsuarioAdministrativoModel): Promise<any> {
     const payload = {
-      username: usuarioAdministrativo.email,
-      sub: usuarioAdministrativo.id,
+      userid: usuarioAdministrativo.id,
+      userident: usuarioAdministrativo.email,
+      username: usuarioAdministrativo.nomeDeUsuario,
     };
     return {
       access_token: this.jwtService.sign(payload),

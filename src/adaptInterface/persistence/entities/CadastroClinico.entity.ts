@@ -6,6 +6,8 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 import { MedicamentoRegistrado } from './MedicamentoRegistrado.entity';
@@ -87,11 +89,12 @@ export class CadastroClinico {
     eager: true,
     nullable: false,
   })
+  @JoinColumn()
   procAceite: ProcAceite;
 
-  @OneToOne(() => Funcionario, (funcionario) => funcionario.cadastroClinico, {
-    eager: true,
-    nullable: false,
-  })
+  @ManyToOne(
+    () => Funcionario,
+    (funcionario) => funcionario.cadastrosClinicos,
+  )
   funcionario: Funcionario;
 }

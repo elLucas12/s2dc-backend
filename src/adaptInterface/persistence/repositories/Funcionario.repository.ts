@@ -5,6 +5,7 @@ import { Like } from "typeorm";
 import { Funcionario } from "../entities/Funcionario.entity";
 import { IFuncionarioRepository } from "src/domain/repositories/IFuncionario.repository";
 import { FuncionarioModel, FuncionarioSexoEnumModel } from "src/domain/entities/FuncionarioModel.entity";
+import { CadastroClinicoModel } from "src/domain/entities/CadastroClinicoModel.entity";
 
 @Injectable()
 @Dependencies(getRepositoryToken(Funcionario))
@@ -114,7 +115,7 @@ export class FuncionarioRepository implements IFuncionarioRepository {
     cpf: string,
     ctps: string,
     sexo: FuncionarioSexoEnumModel,
-    cadastroClinico: number,
+    cadastrosClinicos: CadastroClinicoModel[],
     senha: string,
   }) {
     if (!obj) {
@@ -126,7 +127,7 @@ export class FuncionarioRepository implements IFuncionarioRepository {
       obj.cpf,
       obj.ctps,
       obj.sexo,
-      obj.cadastroClinico,
+      obj.cadastrosClinicos,
       obj.senha,
     );
   }
