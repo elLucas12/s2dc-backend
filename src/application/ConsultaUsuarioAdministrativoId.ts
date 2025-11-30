@@ -11,7 +11,7 @@ export class ConsultaUsuarioAdministrativoId {
   ) {}
 
   public async run(id: number) {
-    const usuarioAdministrativo = await this.servicoAdministrativo.consultarUsuarioAdministrativo(id);
+    const usuarioAdministrativo = await this.servicoAdministrativo.consultarUsuarioAdministrativoId(id);
     return {
       id: usuarioAdministrativo.id,
       permissao: usuarioAdministrativo.permissao,

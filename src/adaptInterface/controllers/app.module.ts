@@ -32,12 +32,15 @@ import { FuncionarioController } from './Funcionario.controller';
 import { ServicoAdministrativo } from 'src/domain/services/administrativo.service';
 import { ServicoFuncionarios } from 'src/domain/services/funcionarios.service';
 
-import { ConsultaCadastroClinico } from 'src/application/ConsultaCadastroClinico';
 import { ConsultaUsuarioAdministrativoId } from 'src/application/ConsultaUsuarioAdministrativoId';
 import { ConsultaFuncionarioId } from 'src/application/ConsultaFuncionarioId';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from '../autenticacao/JwtAuth.guard';
 import { AutenticacaoModule } from '../autenticacao/Autenticacao.module';
+import { RegistraFuncionario } from 'src/application/RegistraFuncionario';
+import { AtualizaFuncionario } from 'src/application/AtualizaFuncionario';
+import { RegistraUsuarioAdministrativo } from 'src/application/RegistraUsuarioAdministrativo';
+import { AtualizaUsuarioAdministrativo } from 'src/application/AtualizaUsuarioAdministrativo';
 
 @Module({
   imports: [
@@ -84,9 +87,12 @@ import { AutenticacaoModule } from '../autenticacao/Autenticacao.module';
     CadastroClinicoRepository,
 
     // Objetos de aplicação (application layer)
-    ConsultaCadastroClinico,
     ConsultaUsuarioAdministrativoId,
+    RegistraUsuarioAdministrativo,
+    AtualizaUsuarioAdministrativo,
     ConsultaFuncionarioId,
+    RegistraFuncionario,
+    AtualizaFuncionario,
   ],
 })
 export class AppModule {}

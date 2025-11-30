@@ -3,6 +3,8 @@ import { CadastroClinicoInexistenteError } from 'src/adaptInterface/persistence/
 import { FuncionarioInexistenteError } from 'src/adaptInterface/persistence/exceptions/FuncionarioInexistenteError';
 import { CadastroClinicoRepository } from 'src/adaptInterface/persistence/repositories/CadastroClinico.repository';
 import { FuncionarioRepository } from 'src/adaptInterface/persistence/repositories/Funcionario.repository';
+import { FuncionarioModel } from '../entities/FuncionarioModel.entity';
+import { FuncionarioExistenteError } from 'src/adaptInterface/persistence/exceptions/FuncionarioExistenteError';
 
 @Injectable()
 @Dependencies(
@@ -51,5 +53,31 @@ export class ServicoFuncionarios {
       throw new CadastroClinicoInexistenteError(`Entidade 'CadastroClinico' ID ${id} inexistente`);
     }
     return cadastroClinico;
+  }
+
+  /**
+   * Atualiza informações cadastrais de funcionário passado.
+   * @param funcionario Informações de funcionário em objeto.
+   * @return Modelo construído da entidade.
+   */
+  public async atualizarFuncionario(funcionario: FuncionarioModel | any) {
+    const funcionarioAtualizado = await this.funcionarioRepository.atualizar(funcionario.id, funcionario);
+    if (!funcionarioAtualizado) {
+      throw new FuncionarioInexistenteError(`Entidade 'Funcionario' ID ${funcionario.id} inexistente`);
+    }
+    return funcionarioAtualizado;
+  }
+
+  /**
+   * Salva informações cadastrais de funcionário passado.
+   * @param funcionario Informações de funcionário em objeto.
+   * @return Modelo construído da entidade.
+   */
+  public async registrarFuncionario(funcionario: FuncionarioModel | any) {
+    const funcionarioAux = await this.funcionarioRepository.consultarId(funcionario.id);
+    if (funcionarioAux) {
+      throw new FuncionarioExistenteError(`Entidade 'Funcionario' ID ${funcionario.id} já existe no sistema`);
+    }
+    return await this.funcionarioRepository.registrar(funcionario);
   }
 }
