@@ -51,6 +51,9 @@ import { AlergiaController } from './Alergia.controller';
 import { TipoSanguineoController } from './TipoSanguineo.controller';
 import { MedicamentoController } from './Medicamento.controller';
 import { MedicamentoRegistradoRepository } from '../persistence/repositories/MedicamentoRegistrado.repository';
+import { ProcAceiteRepository } from '../persistence/repositories/ProcAceite.repository';
+import { EventoProcAceiteRepository } from '../persistence/repositories/EventoProcAceite.repository';
+import { ServicoProcAceite } from 'src/domain/services/ProcAceite.service';
 
 @Module({
   imports: [
@@ -95,6 +98,7 @@ import { MedicamentoRegistradoRepository } from '../persistence/repositories/Med
     ServicoAutenticacao,
     ServicoAdministrativo,
     ServicoFuncionarios,
+    ServicoProcAceite,
 
     // Repositórios de entidades
     FuncionarioRepository,
@@ -105,6 +109,8 @@ import { MedicamentoRegistradoRepository } from '../persistence/repositories/Med
     AlergiaRegistradaRepository,
     TipoSanguineoRepository,
     MedicamentoRegistradoRepository,
+    ProcAceiteRepository,
+    EventoProcAceiteRepository,
 
     // Objetos de aplicação (application layer)
     ConsultaUsuarioAdministrativoId,

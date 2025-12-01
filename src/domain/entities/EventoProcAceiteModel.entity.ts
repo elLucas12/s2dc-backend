@@ -6,7 +6,6 @@ export class EventoProcAceiteModel {
   corpo: string;
   criadoEm: Date;
   atualizadoEm: Date;
-  procAceite: number;
 
   constructor(
     id: number,
@@ -16,7 +15,6 @@ export class EventoProcAceiteModel {
     corpo: string,
     criadoEm: Date,
     atualizadoEm: Date,
-    procAceite: number,
   ) {
     this.id = id;
     this.titulo = titulo;
@@ -25,6 +23,5 @@ export class EventoProcAceiteModel {
     this.corpo = corpo;
     this.criadoEm = criadoEm;
     this.atualizadoEm = atualizadoEm;
-    this.procAceite = procAceite;
   }
 }
