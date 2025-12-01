@@ -30,8 +30,8 @@ export class ServicoAutenticacao {
     if (auxFuncionario) {
       throw new ConflictException('Funcionário já existe.');
     }
-    // Cria instância de funcionário
-    // const senhaHash = await bcrypt.hash(funcionario.senha, 12);
+    // Cria instância de funcionário com senha em hash
+    funcionario.senha = await bcrypt.hash(funcionario.senha, 12);
     return await this.funcionarioRepository.registrar(funcionario);
   }
 

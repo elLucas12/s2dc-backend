@@ -41,6 +41,16 @@ import { RegistraFuncionario } from 'src/application/RegistraFuncionario';
 import { AtualizaFuncionario } from 'src/application/AtualizaFuncionario';
 import { RegistraUsuarioAdministrativo } from 'src/application/RegistraUsuarioAdministrativo';
 import { AtualizaUsuarioAdministrativo } from 'src/application/AtualizaUsuarioAdministrativo';
+import { CirurgiaRegistradaRepository } from '../persistence/repositories/CirurgiaRegistrada.repository';
+import { CirurgiaController } from './Cirurgia.controller';
+import { DoencaRegistradaRepository } from '../persistence/repositories/DoencaRegistrada.repository';
+import { AlergiaRegistradaRepository } from '../persistence/repositories/AlergiaRegistrada.repository';
+import { TipoSanguineoRepository } from '../persistence/repositories/TipoSanguineo.repository';
+import { DoencaController } from './Doenca.controller';
+import { AlergiaController } from './Alergia.controller';
+import { TipoSanguineoController } from './TipoSanguineo.controller';
+import { MedicamentoController } from './Medicamento.controller';
+import { MedicamentoRegistradoRepository } from '../persistence/repositories/MedicamentoRegistrado.repository';
 
 @Module({
   imports: [
@@ -67,6 +77,11 @@ import { AtualizaUsuarioAdministrativo } from 'src/application/AtualizaUsuarioAd
     AutenticacaoController,
     AdministrativoController,
     FuncionarioController,
+    CirurgiaController,
+    DoencaController,
+    AlergiaController,
+    TipoSanguineoController,
+    MedicamentoController,
   ],
   providers: [
     // Jwt -> autenticação global requerida
@@ -85,6 +100,11 @@ import { AtualizaUsuarioAdministrativo } from 'src/application/AtualizaUsuarioAd
     FuncionarioRepository,
     UsuarioAdministrativoRepository,
     CadastroClinicoRepository,
+    CirurgiaRegistradaRepository,
+    DoencaRegistradaRepository,
+    AlergiaRegistradaRepository,
+    TipoSanguineoRepository,
+    MedicamentoRegistradoRepository,
 
     // Objetos de aplicação (application layer)
     ConsultaUsuarioAdministrativoId,

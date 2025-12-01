@@ -14,17 +14,14 @@ export class TipoSanguineoModel {
   id: number;
   tipo: TipoSanguineoTipoEnumModel;
   fatorRh: TipoSanguineoFatorRhEnumModel;
-  cadastroClinico: number;
 
   constructor(
     id: number,
     tipo: TipoSanguineoTipoEnumModel,
     fatorRh: TipoSanguineoFatorRhEnumModel,
-    cadastroClinico: number,
   ) {
     this.id = id;
     this.tipo = tipo;
     this.fatorRh = fatorRh;
-    this.cadastroClinico = cadastroClinico;
   }
 }

@@ -89,6 +89,8 @@ export class FuncionarioRepository implements IFuncionarioRepository {
   ): Promise<FuncionarioModel> {
     const funcionarioAlvo = await this.funcionarios.findOneBy({id});
     if (!funcionarioAlvo) return funcionarioAlvo;
+    console.log(funcionarioAlvo)
+    console.log(FuncionarioRepository.createFromObject(funcionario));
     const resp = await this.funcionarios.save(funcionario);
     return FuncionarioRepository.createFromObject(resp);
   }
