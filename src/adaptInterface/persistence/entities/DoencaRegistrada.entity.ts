@@ -29,6 +29,15 @@ export class DoencaRegistrada {
   @Column({
     type: 'date',
     nullable: true,
+    transformer: {
+      to(value: Date): string {
+        let x = value.toISOString();
+        return x.split('T')[0];
+      },
+      from (value: string): Date {
+        return new Date(value);
+      }
+    }
   })
   dataConhecimento: Date;
 
@@ -44,6 +53,7 @@ export class DoencaRegistrada {
     {
       eager: true,
       nullable: true,
+      cascade: true,
     },
   )
   medicamentosRegistrados: MedicamentoRegistrado[];

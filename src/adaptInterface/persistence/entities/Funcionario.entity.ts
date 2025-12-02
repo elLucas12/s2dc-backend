@@ -41,6 +41,7 @@ export class Funcionario {
   @OneToMany(() => CadastroClinico, (cadastroClinico) => cadastroClinico.funcionario, {
     eager: true,
     nullable: true,
+    cascade: true,
   })
   cadastrosClinicos: CadastroClinico[];
 }

@@ -23,6 +23,15 @@ export class EventoProcAceite {
   @Column({
     type: 'date',
     nullable: true,
+    transformer: {
+      to(value: Date): string {
+        console.log(value); // TODO: Arrumar conversão de data
+        return value.toISOString().split('T')[0];
+      },
+      from (value: string): Date {
+        return new Date(value);
+      }
+    }
   })
   data: Date;
 

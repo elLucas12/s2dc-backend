@@ -107,7 +107,6 @@ export class CadastroClinicoRepository implements ICadastroClinicoRepository {
     criadoEm: Date,
     atualizadoEm: Date,
     procAceite: ProcAceiteModel,
-    funcionario: FuncionarioModel,
     alergiasRegistradas: AlergiaRegistradaModel[],
     cirurgiasRegistradas: CirurgiaRegistradaModel[],
     doencasRegistradas: DoencaRegistradaModel[],

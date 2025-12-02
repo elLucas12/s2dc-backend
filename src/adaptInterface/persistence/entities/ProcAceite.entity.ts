@@ -21,12 +21,30 @@ export class ProcAceite {
   @Column({
     type: 'date',
     nullable: true,
+    transformer: {
+      to(value: Date): string {
+        let x = value.toISOString();
+        return x.split('T')[0];
+      },
+      from (value: string): Date {
+        return new Date(value);
+      }
+    }
   })
   dataFim: Date;
 
   @Column({
     type: 'date',
     nullable: false,
+    transformer: {
+      to(value: Date): string {
+        let x = value.toISOString();
+        return x.split('T')[0];
+      },
+      from (value: string): Date {
+        return new Date(value);
+      }
+    }
   })
   dataInicio: Date;
 
@@ -54,6 +72,7 @@ export class ProcAceite {
     {
       eager: true,
       nullable: false,
+      cascade: true,
     },
   )
   eventosProcAceite: EventoProcAceite[];

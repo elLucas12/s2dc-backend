@@ -57,6 +57,7 @@ export class UsuarioAdministrativo {
     {
       eager: false,
       nullable: true,
+      cascade: true,
     },
   )
   procsAceite: ProcAceite[];

@@ -5,6 +5,8 @@ import { CadastroClinicoRepository } from 'src/adaptInterface/persistence/reposi
 import { FuncionarioRepository } from 'src/adaptInterface/persistence/repositories/Funcionario.repository';
 import { FuncionarioModel } from '../entities/FuncionarioModel.entity';
 import { FuncionarioExistenteError } from 'src/adaptInterface/persistence/exceptions/FuncionarioExistenteError';
+import { CadastroClinicoModel } from '../entities/CadastroClinicoModel.entity';
+import { CadastroClinicoExistenteError } from 'src/adaptInterface/persistence/exceptions/CadastroClinicoExistenteError';
 
 @Injectable()
 @Dependencies(
@@ -56,6 +58,20 @@ export class ServicoFuncionarios {
   }
 
   /**
+   * Consulta último cadastro clínico de funcionário pelo ID do funcionário.
+   * @param id Número de ID do Funcionário.
+   * @return Modelo construído da entidade Cadastro Clínico.
+   */
+  public async consultarCadastroClinicoPorFuncionarioId(id: number) {
+    const funcionario = await this.consultarFuncionarioId(id);
+    const cadastroClinico = funcionario.cadastrosClinicos.at(-1);
+    if (!cadastroClinico) {
+      throw new CadastroClinicoInexistenteError(`Entidade 'CadastroClinico' de 'Funcionário' ID ${id} não existe`);
+    }
+    return cadastroClinico;
+  }
+
+  /**
    * Atualiza informações cadastrais de funcionário passado.
    * @param funcionario Informações de funcionário em objeto.
    * @return Modelo construído da entidade.
@@ -79,5 +95,12 @@ export class ServicoFuncionarios {
       throw new FuncionarioExistenteError(`Entidade 'Funcionario' ID ${funcionario.id} já existe no sistema`);
     }
     return await this.funcionarioRepository.registrar(funcionario);
+  }
+
+  public async registrarCadastroClinico(cadastroClinico: CadastroClinicoModel | any) {
+    const cadastroClinicoAux = await this.cadastroClinicoRepository.registrar(cadastroClinico);
+    if (!cadastroClinicoAux) {
+      throw new CadastroClinicoExistenteError(`Entidade 'CadastroClinico' "${JSON.stringify(cadastroClinico)}" inexistente`);
+    }
   }
 }

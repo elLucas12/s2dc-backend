@@ -41,6 +41,7 @@ export class CadastroClinico {
     {
       eager: true,
       nullable: true,
+      cascade: true,
     },
   )
   medicamentosRegistrados: MedicamentoRegistrado[];
@@ -51,6 +52,7 @@ export class CadastroClinico {
     {
       eager: true, // carregar automaticamente com find()
       nullable: true,
+      cascade: true,
     },
   )
   alergiasRegistradas: AlergiaRegistrada[];
@@ -61,6 +63,7 @@ export class CadastroClinico {
     {
       eager: true, // carregar automaticamente com find()
       nullable: true,
+      cascade: true,
     },
   )
   cirurgiasRegistradas: CirurgiaRegistrada[];
@@ -71,6 +74,7 @@ export class CadastroClinico {
     {
       eager: true, // carregar automaticamente com find()
       nullable: true,
+      cascade: true,
     },
   )
   doencasRegistradas: DoencaRegistrada[];
@@ -81,6 +85,7 @@ export class CadastroClinico {
     {
       eager: true, // carregar automaticamente com find()
       nullable: true,
+      cascade: true,
     },
   )
   tiposSanguineos: TipoSanguineo[];
@@ -88,6 +93,7 @@ export class CadastroClinico {
   @OneToOne(() => ProcAceite, (procAceite) => procAceite.cadastroClinico, {
     eager: true,
     nullable: false,
+    cascade: true,
   })
   @JoinColumn()
   procAceite: ProcAceite;
