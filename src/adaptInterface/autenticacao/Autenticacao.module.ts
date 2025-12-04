@@ -4,6 +4,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { PassportModule } from "@nestjs/passport";
 import { JwtStrategy } from "./Jwt.strategy";
 import { JwtAuthGuard } from "./JwtAuth.guard";
+import { PermGuard } from "./Perm.guard";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { JwtAuthGuard } from "./JwtAuth.guard";
   providers: [
     JwtStrategy,
     JwtAuthGuard,
+    PermGuard,
   ],
   exports: [
     JwtModule,

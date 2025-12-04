@@ -54,6 +54,7 @@ import { MedicamentoRegistradoRepository } from '../persistence/repositories/Med
 import { ProcAceiteRepository } from '../persistence/repositories/ProcAceite.repository';
 import { EventoProcAceiteRepository } from '../persistence/repositories/EventoProcAceite.repository';
 import { ServicoProcAceite } from 'src/domain/services/ProcAceite.service';
+import { PermGuard } from '../autenticacao/Perm.guard';
 
 @Module({
   imports: [
@@ -91,6 +92,10 @@ import { ServicoProcAceite } from 'src/domain/services/ProcAceite.service';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermGuard,
     },
 
     // Serviços

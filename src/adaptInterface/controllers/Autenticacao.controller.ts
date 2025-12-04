@@ -55,7 +55,7 @@ export class AutenticacaoController {
   @Bind(Body(new UsuarioAdministrativoValidatorPipe(UsuarioAdministrativoRegistrarDtoSchema)))
   public async postUsuarioAdministrativoRegistrar(@Body() dados: any) {
     this.logger.log(`[Reg. ADMIN] => email: ${dados.email}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
-    return await this.servicoAutenticacao.registrarUsuarioAdministrativo({email: dados.email, senha: dados.senha});
+    return await this.servicoAutenticacao.registrarUsuarioAdministrativo(dados);
   }
 
   @Public()
@@ -63,10 +63,10 @@ export class AutenticacaoController {
   @Bind(Body(new UsuarioAdministrativoValidatorPipe(UsuarioAdministrativoLoginDtoSchema)))
   public async postUsuarioAdministrativoLogin(@Body() dados: any) {
     this.logger.log(`[Login ADMIN] => email: ${dados.email}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
-    const funcionario = await this.servicoAutenticacao.validarUsuarioAdministrativo({email: dados.email, senha: dados.senha});
-    if (!funcionario) {
+    const usuarioAdministrativo = await this.servicoAutenticacao.validarUsuarioAdministrativo({email: dados.email, senha: dados.senha});
+    if (!usuarioAdministrativo) {
       throw new UnauthorizedException();
     }
-    return await this.servicoAutenticacao.loginFuncionario(funcionario);
+    return await this.servicoAutenticacao.loginUsuarioAdministrativo(usuarioAdministrativo);
   }
 }

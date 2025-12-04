@@ -1,4 +1,4 @@
-import { Controller, Get, Dependencies, Body, Bind, Param, ParseIntPipe, Logger, NotFoundException, Request, Post, Put } from '@nestjs/common';
+import { Controller, Get, Dependencies, Body, Bind, Param, ParseIntPipe, Logger, NotFoundException, Request, Post, Put, ForbiddenException } from '@nestjs/common';
 import { FuncionarioInexistenteError } from '../persistence/exceptions/FuncionarioInexistenteError';
 import { ConsultaFuncionarioId } from 'src/application/ConsultaFuncionarioId';
 import { User } from '../decorators/user.decorator';
@@ -7,6 +7,9 @@ import { AtualizaFuncionario } from 'src/application/AtualizaFuncionario';
 import { FuncionarioValidatorPipe } from '../persistence/entities/Funcionario.validator';
 import { FuncionarioRegistrarDtoSchema } from '../persistence/entities/FuncionarioRegistrar.dto';
 import { FuncionarioAtualizarDtoSchema } from '../persistence/entities/FuncionarioAtualizar.dto';
+import { Perms } from '../autenticacao/perms.decorator';
+import { UsuarioAdministrativoPermissaoEnumModel } from 'src/domain/entities/UsuarioAdministrativoModel.entity';
+import { FuncionarioExistenteError } from '../persistence/exceptions/FuncionarioExistenteError';
 
 @Controller('funcionario')
 @Dependencies(
@@ -23,6 +26,9 @@ export class FuncionarioController {
     private readonly atualizaFuncionario: AtualizaFuncionario,
   ) {}
 
+  @Perms( 
+    UsuarioAdministrativoPermissaoEnumModel.VIS,
+  )
   @Get('')
   async getFuncionario(@User() user: any) {
     try {
@@ -38,6 +44,10 @@ export class FuncionarioController {
     }
   }
 
+  @Perms( 
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
   @Post('')
   @Bind(Body(new FuncionarioValidatorPipe(FuncionarioRegistrarDtoSchema)))
   async postFuncionario(@User() user: any, @Body() dados: Body) {
@@ -45,6 +55,9 @@ export class FuncionarioController {
     return await this.registraFuncionario.run(dados);
   }
 
+  @Perms( 
+    UsuarioAdministrativoPermissaoEnumModel.VIS,
+  )
   @Put('')
   @Bind(Body(new FuncionarioValidatorPipe(FuncionarioAtualizarDtoSchema)))
   async putFuncionario(@User() user: any, @Body() dados: Body) {
@@ -61,6 +74,10 @@ export class FuncionarioController {
     }
   }
 
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
   @Get(':id')
   @Bind(Param('id', ParseIntPipe))
   async getFuncionarioId(@Param('id') id: number) {
@@ -77,6 +94,10 @@ export class FuncionarioController {
     }
   }
 
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
   @Post(':id')
   @Bind(
     Param('id', ParseIntPipe),
@@ -87,15 +108,19 @@ export class FuncionarioController {
       this.logger.log(`[POST] Funcionário id ${id}`);
       return await this.registraFuncionario.run(dados);
     } catch (error) {
-      if (error instanceof FuncionarioInexistenteError) {
-        throw new NotFoundException('Funcionário não existe', {
-          cause: error
+      if (error instanceof FuncionarioExistenteError) {
+        throw new ForbiddenException('Funcionário já existe', {
+          cause: error // TODO: ver exception correta nesta ocasião.
         });
       }
       throw error;
     }
   }
 
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
   @Put(':id')
   @Bind(
     Param('id', ParseIntPipe),

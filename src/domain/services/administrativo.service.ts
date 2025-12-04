@@ -18,11 +18,12 @@ export class ServicoAdministrativo {
    * @param email Endereço de email em string.
    * @return Modelo construído da entidade.
    */
-  public async consultarUsuarioAdministrativoEmail(email: string) {
+  public async consultarUsuarioAdministrativoEmail(email: string): Promise<UsuarioAdministrativoModel> {
     const usuarioAdministrativo = await this.usuarioAdministrativoRepository.consultarEmail(email)
     if (!usuarioAdministrativo) {
       throw new UsuarioAdministrativoInexistenteError(`Entidade 'UsuarioAdministrativo' EMAIL * inexistente`);
     }
+    return usuarioAdministrativo;
   }
 
   /**
@@ -71,7 +72,7 @@ export class ServicoAdministrativo {
    * @return Modelo construído da entidade.
    */
   public async registrarUsuarioAdministrativo(usuarioAdministrativo: UsuarioAdministrativoModel | any) {
-    const usuarioAdministrativoAux = await this.usuarioAdministrativoRepository.consultarId(usuarioAdministrativo.id);
+    const usuarioAdministrativoAux = await this.usuarioAdministrativoRepository.consultarEmail(usuarioAdministrativo.email);
     if (usuarioAdministrativoAux) {
       throw new UsuarioAdministrativoExistenteError(`Entidade 'UsuarioAdministrativo' ID ${usuarioAdministrativo.id} já existe no sistema`);
     }

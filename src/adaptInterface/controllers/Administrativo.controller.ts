@@ -8,6 +8,8 @@ import { UsuarioAdministrativoValidatorPipe } from '../persistence/entities/Usua
 import { UsuarioAdministrativoRegistrarDtoSchema } from '../persistence/entities/UsuarioAdministrativoRegistrar.dto';
 import { UsuarioAdministrativoExistenteError } from '../persistence/exceptions/UsuarioAdministrativoExistente';
 import { UsuarioAdministrativoAtualizarDtoSchema } from '../persistence/entities/UsuarioAdministrativoAtualizar.dto';
+import { Perms } from '../autenticacao/perms.decorator';
+import { UsuarioAdministrativoPermissaoEnumModel } from 'src/domain/entities/UsuarioAdministrativoModel.entity';
 
 @Controller('usuarioAdministrativo')
 @Dependencies(
@@ -24,6 +26,10 @@ export class AdministrativoController {
     private readonly atualizaUsuarioAdministrativo: AtualizaUsuarioAdministrativo,
   ) {}
 
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
   @Get('')
   async getUsuarioAdministrativo(@User() user: any) {
     try {
@@ -39,7 +45,10 @@ export class AdministrativoController {
     }
   }
 
-  // TODO: Criar lógica para lidar com registro de usuários administrativos neste contexto de endpoint (conforme permissões).
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
   @Post('')
   @Bind(Body(new UsuarioAdministrativoValidatorPipe(UsuarioAdministrativoRegistrarDtoSchema)))
   async postUsuarioAdministrativo(@User() user: any, @Body() dados: Body) {
@@ -56,6 +65,10 @@ export class AdministrativoController {
     }
   }
 
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
   @Put('')
   @Bind(Body(new UsuarioAdministrativoValidatorPipe(UsuarioAdministrativoAtualizarDtoSchema)))
   async putUsuarioAdministrativo(@User() user: any, @Body() dados: Body) {
@@ -72,6 +85,10 @@ export class AdministrativoController {
     }
   }
 
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
   @Get(':id')
   @Bind(Param('id', ParseIntPipe))
   async getUsuarioAdministrativoId(@Param('id') id: number) {
@@ -88,6 +105,9 @@ export class AdministrativoController {
     }
   }
 
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+  )
   @Post(':id')
   @Bind(
     Param('id', ParseIntPipe),
@@ -107,6 +127,9 @@ export class AdministrativoController {
     }
   }
 
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+  )
   @Put(':id')
   @Bind(
     Param('id', ParseIntPipe),

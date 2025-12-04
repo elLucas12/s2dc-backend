@@ -3,40 +3,34 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 
-import { FuncionarioRepository } from '../../adaptInterface/persistence/repositories/Funcionario.repository';
 import { FuncionarioModel } from 'src/domain/entities/FuncionarioModel.entity';
 
-import { UsuarioAdministrativoRepository } from '../../adaptInterface/persistence/repositories/UsuarioAdministrativo.repository';
-import { UsuarioAdministrativoModel } from 'src/domain/entities/UsuarioAdministrativoModel.entity';
+import { UsuarioAdministrativoModel, UsuarioAdministrativoPermissaoEnumModel } from 'src/domain/entities/UsuarioAdministrativoModel.entity';
+import { ServicoFuncionarios } from './funcionarios.service';
+import { ServicoAdministrativo } from './administrativo.service';
 
 @Injectable()
 @Dependencies(
   ConfigService,
   JwtService,
-  FuncionarioRepository,
-  UsuarioAdministrativoRepository,
+  ServicoFuncionarios,
+  ServicoAdministrativo,
 )
 export class ServicoAutenticacao {
   constructor(
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
-    private readonly funcionarioRepository: FuncionarioRepository,
-    private readonly usuarioAdministrativoRepository: UsuarioAdministrativoRepository,
+    private readonly servicoFuncionarios: ServicoFuncionarios,
+    private readonly servicoAdministrativo: ServicoAdministrativo,
   ) {}
 
   public async registrarFuncionario(funcionario: any): Promise<FuncionarioModel | undefined> {
-    // Verifica se o funcionário já existe no banco
-    const auxFuncionario = await this.funcionarioRepository.consultarCpf(funcionario.cpf);
-    if (auxFuncionario) {
-      throw new ConflictException('Funcionário já existe.');
-    }
-    // Cria instância de funcionário com senha em hash
     funcionario.senha = await bcrypt.hash(funcionario.senha, 12);
-    return await this.funcionarioRepository.registrar(funcionario);
+    return await this.servicoFuncionarios.registrarFuncionario(funcionario);
   }
 
   public async validarFuncionario(funcionario: {cpf: string, senha: string}): Promise<any> {
-    const funcionarioAlvo = await this.funcionarioRepository.consultarCpf(funcionario.cpf);
+    const funcionarioAlvo = await this.servicoFuncionarios.consultarFuncionarioCpf(funcionario.cpf);
     if (funcionarioAlvo && await bcrypt.compare(funcionario.senha, funcionarioAlvo.senha)) {
       const { senha, ...res } = funcionarioAlvo; // (x) sem senha
       return res;
@@ -48,25 +42,22 @@ export class ServicoAutenticacao {
       userid: funcionario.id,
       userident: funcionario.cpf,
       username: funcionario.nome,
+      userperm: UsuarioAdministrativoPermissaoEnumModel.VIS,
     };
+    console.log(payload);
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
   public async registrarUsuarioAdministrativo(usuarioAdministrativo: any): Promise<UsuarioAdministrativoModel | undefined> {
-    // Verifica se o funcionário já existe no banco
-    const auxUsuarioAdministrativo = await this.usuarioAdministrativoRepository.consultarEmail(usuarioAdministrativo.email);
-    if (auxUsuarioAdministrativo) {
-      throw new ConflictException('Usuário Administrativo já existe.');
-    }
     // Cria instância de usuário admin.
-    // const senhaHash = await bcrypt.hash(usuarioAdministrativo.senha, 12);
-    return await this.usuarioAdministrativoRepository.registrar(usuarioAdministrativo);
+    usuarioAdministrativo.senha = await bcrypt.hash(usuarioAdministrativo.senha, 12);
+    return await this.servicoAdministrativo.registrarUsuarioAdministrativo(usuarioAdministrativo);
   }
 
   public async validarUsuarioAdministrativo(usuarioAdministrativo: {email: string, senha: string}): Promise<any> {
-    const usuarioAdministrativoAlvo = await this.usuarioAdministrativoRepository.consultarEmail(usuarioAdministrativo.email);
+    const usuarioAdministrativoAlvo = await this.servicoAdministrativo.consultarUsuarioAdministrativoEmail(usuarioAdministrativo.email);
     if (usuarioAdministrativoAlvo && await bcrypt.compare(usuarioAdministrativo.senha, usuarioAdministrativoAlvo.senha)) {
       const { senha, ...res } = usuarioAdministrativoAlvo; // (x) sem senha
       return res;
@@ -78,7 +69,9 @@ export class ServicoAutenticacao {
       userid: usuarioAdministrativo.id,
       userident: usuarioAdministrativo.email,
       username: usuarioAdministrativo.nomeDeUsuario,
+      userperm: usuarioAdministrativo.permissao,
     };
+    console.log("PAYLOAD =======> ", payload);
     return {
       access_token: this.jwtService.sign(payload),
     };

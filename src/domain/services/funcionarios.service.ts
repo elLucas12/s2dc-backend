@@ -7,16 +7,33 @@ import { FuncionarioModel } from '../entities/FuncionarioModel.entity';
 import { FuncionarioExistenteError } from 'src/adaptInterface/persistence/exceptions/FuncionarioExistenteError';
 import { CadastroClinicoModel } from '../entities/CadastroClinicoModel.entity';
 import { CadastroClinicoExistenteError } from 'src/adaptInterface/persistence/exceptions/CadastroClinicoExistenteError';
+import { CirurgiaRegistradaModel } from '../entities/CirurgiaRegistradaModel.entity';
+import { CirurgiaRegistradaRepository } from 'src/adaptInterface/persistence/repositories/CirurgiaRegistrada.repository';
+import { DoencaRegistradaRepository } from 'src/adaptInterface/persistence/repositories/DoencaRegistrada.repository';
+import { AlergiaRegistradaRepository } from 'src/adaptInterface/persistence/repositories/AlergiaRegistrada.repository';
+import { MedicamentoRegistradoRepository } from 'src/adaptInterface/persistence/repositories/MedicamentoRegistrado.repository';
+import { TipoSanguineoRepository } from 'src/adaptInterface/persistence/repositories/TipoSanguineo.repository';
+import { CirurgiaExistenteError } from 'src/adaptInterface/persistence/exceptions/CirurgiaExistenteError';
 
 @Injectable()
 @Dependencies(
   FuncionarioRepository,
   CadastroClinicoRepository,
+  CirurgiaRegistradaRepository,
+  DoencaRegistradaRepository,
+  AlergiaRegistradaRepository,
+  MedicamentoRegistradoRepository,
+  TipoSanguineoRepository,
 )
 export class ServicoFuncionarios {
   constructor(
     private readonly funcionarioRepository: FuncionarioRepository,
     private readonly cadastroClinicoRepository: CadastroClinicoRepository,
+    private readonly cirurgiaRegistradaRepository: CirurgiaRegistradaRepository,
+    private readonly doencaRegistradaRepository: DoencaRegistradaRepository,
+    private readonly alergiaRegistradaRepository: AlergiaRegistradaRepository,
+    private readonly medicamentoRegistradoRepository: MedicamentoRegistradoRepository,
+    private readonly tipoSanguineoRepository: TipoSanguineoRepository,
   ) {}
 
   /**
@@ -29,6 +46,7 @@ export class ServicoFuncionarios {
     if (!funcionario) {
       throw new FuncionarioInexistenteError(`Entidade 'Funcionario' CPF * inexistente`);
     }
+    return funcionario;
   }
 
   /**
@@ -90,7 +108,7 @@ export class ServicoFuncionarios {
    * @return Modelo construído da entidade.
    */
   public async registrarFuncionario(funcionario: FuncionarioModel | any) {
-    const funcionarioAux = await this.funcionarioRepository.consultarId(funcionario.id);
+    const funcionarioAux = await this.funcionarioRepository.consultarCpf(funcionario.cpf);
     if (funcionarioAux) {
       throw new FuncionarioExistenteError(`Entidade 'Funcionario' ID ${funcionario.id} já existe no sistema`);
     }
@@ -102,5 +120,18 @@ export class ServicoFuncionarios {
     if (!cadastroClinicoAux) {
       throw new CadastroClinicoExistenteError(`Entidade 'CadastroClinico' "${JSON.stringify(cadastroClinico)}" inexistente`);
     }
+  }
+
+  /**
+   * Salva informações de cirurgia passada por objeto.
+   * @param cirurgia Informações de cirurgia em objeto.
+   * @return Modelo construído da entidade.
+   */
+  public async registrarCirurgia(cirurgia: CirurgiaRegistradaModel | any) {
+    const cirurgiaAux = await this.cirurgiaRegistradaRepository.consultarId(cirurgia.id);
+    if (cirurgiaAux) {
+      throw new CirurgiaExistenteError(`Entidade 'Cirurgia' ID ${cirurgia.id} já existe no sistema`);
+    }
+    return await this.cirurgiaRegistradaRepository.registrar(cirurgia);
   }
 }
