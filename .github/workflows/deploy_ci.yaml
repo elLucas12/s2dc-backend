@@ -1,12 +1,12 @@
-name: Teste e Release (desenvolvimento)
+name: Deploy (release principal)
 
 on:
   push:
     branches:
-      - devel
+      - main
   pull_request:
     branches:
-      - devel
+      - main
 
 env:
   # env servidor MySQL
@@ -23,7 +23,7 @@ env:
   DB_NAME: s2dc_data
 
 jobs:
-  test:
+  publish:
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -59,6 +59,7 @@ jobs:
           sudo apt-get install -y mysql-client
           mysqladmin ping -h {{ env.DB_HOST }} -P {{ env.DB_PORT }} -u {{ env.DB_USERNAME }} -p{{ env.DB_PASSWORD }} --wait=30 --count=10
 
+      # Rodar testes unitários
       - name: Rodar testes Jest
         run: npm test
         env:
@@ -77,10 +78,16 @@ jobs:
           DB_USERNAME: ${{ env.DB_USERNAME }}
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
           DB_NAME: ${{ env.DB_NAME }}
+      
+      # Publica o pacote de versão no github package (npm)
+      - name: "Publicar Pacote de Versão"
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
     name: Criação de Release do Código
-    needs: [test]
+    needs: [publish]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
@@ -105,6 +112,5 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: |
             ${{ steps.get_commit_msg.outputs.commit_msg }}
-            **Está é uma versão de desenvolvimento**
           draft: false
-          prerelease: true
+          prerelease: false
