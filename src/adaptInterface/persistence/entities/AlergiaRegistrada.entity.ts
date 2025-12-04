@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 
 import { CadastroClinico } from './CadastroClinico.entity';
@@ -32,13 +33,9 @@ export class AlergiaRegistrada {
   )
   cadastroClinico: CadastroClinico;
 
-  @OneToMany(
+  @ManyToMany(
     () => MedicamentoRegistrado,
-    (medicamentoRegistrado) => medicamentoRegistrado.alergiaRegistrada,
-    {
-      eager: true,
-      nullable: true,
-    },
+    (medicamentoRegistrado) => medicamentoRegistrado.cadastrosClinicos,
   )
   medicamentosRegistrados: MedicamentoRegistrado[];
 }

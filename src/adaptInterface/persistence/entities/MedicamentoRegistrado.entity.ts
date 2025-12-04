@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
 import { CadastroClinico } from './CadastroClinico.entity';
 import { AlergiaRegistrada } from './AlergiaRegistrada.entity';
 import { CirurgiaRegistrada } from './CirurgiaRegistrada.entity';
@@ -21,27 +21,43 @@ export class MedicamentoRegistrado {
   })
   dosagemMg: number;
 
-  @ManyToOne(
+  @ManyToMany(
     () => CadastroClinico,
     (cadastroClinico) => cadastroClinico.medicamentosRegistrados,
+    {
+      eager: false,
+      nullable: true,
+    },
   )
-  cadastroClinico: CadastroClinico;
+  cadastrosClinicos: CadastroClinico[];
 
-  @ManyToOne(
+  @ManyToMany(
     () => AlergiaRegistrada,
     (alergiaRegistrada) => alergiaRegistrada.medicamentosRegistrados,
+    {
+      eager: false,
+      nullable: true,
+    },
   )
-  alergiaRegistrada: AlergiaRegistrada;
+  alergiasRegistradas: AlergiaRegistrada[];
 
-  @ManyToOne(
+  @ManyToMany(
     () => CirurgiaRegistrada,
     (cirurgiaRegistrada) => cirurgiaRegistrada.medicamentosRegistrados,
+    {
+      eager: false,
+      nullable: true,
+    },
   )
-  cirurgiaRegistrada: CirurgiaRegistrada;
+  cirurgiasRegistradas: CirurgiaRegistrada[];
 
-  @ManyToOne(
+  @ManyToMany(
     () => DoencaRegistrada,
     (doencaRegistrada) => doencaRegistrada.medicamentosRegistrados,
+    {
+      eager: false,
+      nullable: true,
+    },
   )
-  doencaRegistrada: DoencaRegistrada;
+  doencasRegistradas: DoencaRegistrada[];
 }
