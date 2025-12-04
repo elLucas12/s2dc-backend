@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { CadastroClinico } from './CadastroClinico.entity';
 import {
@@ -23,9 +23,14 @@ export class TipoSanguineo {
   })
   fatorRh: TipoSanguineoFatorRhEnumModel;
 
-  @ManyToOne(
+  @OneToMany(
     () => CadastroClinico,
-    (cadastroClinico) => cadastroClinico.tiposSanguineos,
+    (cadastroClinico) => cadastroClinico.tipoSanguineo,
+    {
+      eager: true, // carregar automaticamente com find()
+      nullable: true,
+      cascade: true,
+    },
   )
-  cadastroClinico: CadastroClinico;
+  cadastrosClinicos: CadastroClinico[];
 }

@@ -79,16 +79,11 @@ export class CadastroClinico {
   )
   doencasRegistradas: DoencaRegistrada[];
 
-  @OneToMany(
+  @ManyToOne(
     () => TipoSanguineo,
-    (tipoSanguineo) => tipoSanguineo.cadastroClinico,
-    {
-      eager: true, // carregar automaticamente com find()
-      nullable: true,
-      cascade: true,
-    },
+    (tipoSanguineo) => tipoSanguineo.cadastrosClinicos,
   )
-  tiposSanguineos: TipoSanguineo[];
+  tipoSanguineo: TipoSanguineo;
 
   @OneToOne(() => ProcAceite, (procAceite) => procAceite.cadastroClinico, {
     eager: true,
