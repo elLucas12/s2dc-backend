@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import { ProcAceite } from './ProcAceite.entity';
+import { DateTransformer } from '../date.transformer';
 
 @Entity('EventoProcAceite')
 export class EventoProcAceite {
@@ -23,15 +24,7 @@ export class EventoProcAceite {
   @Column({
     type: 'date',
     nullable: true,
-    transformer: {
-      to(value: Date): string {
-        console.log(value); // TODO: Arrumar conversão de data
-        return value.toISOString().split('T')[0];
-      },
-      from (value: string): Date {
-        return new Date(value);
-      }
-    }
+    transformer: DateTransformer
   })
   data: Date;
 

@@ -20,6 +20,7 @@ export class AtualizaUsuarioAdministrativo {
       senha: usuarioAdministrativoAtualizado.senha,
       nodeDeUsuario: usuarioAdministrativoAtualizado.nomeDeUsuario,
       email: usuarioAdministrativoAtualizado.email,
+      procsAceite: usuarioAdministrativoAtualizado.procsAceite,
       criadoEm: usuarioAdministrativoAtualizado.criadoEm,
       atualizadoEm: usuarioAdministrativoAtualizado.atualizadoEm,
     };

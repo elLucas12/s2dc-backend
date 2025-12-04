@@ -19,6 +19,7 @@ export class ConsultaUsuarioAdministrativoId {
       senha: usuarioAdministrativo.senha,
       nodeDeUsuario: usuarioAdministrativo.nomeDeUsuario,
       email: usuarioAdministrativo.email,
+      procsAceite: usuarioAdministrativo.procsAceite,
       criadoEm: usuarioAdministrativo.criadoEm,
       atualizadoEm: usuarioAdministrativo.atualizadoEm,
     };

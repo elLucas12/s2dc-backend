@@ -79,7 +79,7 @@ export class CadastroClinico {
     () => TipoSanguineo,
     (tipoSanguineo) => tipoSanguineo.cadastrosClinicos,
   )
-  tipoSanguineo: TipoSanguineo;
+  tipoSanguineo: TipoSanguineo; // TODO: fazer população inicial de valores.
 
   @OneToOne(() => ProcAceite, (procAceite) => procAceite.cadastroClinico, {
     eager: true,

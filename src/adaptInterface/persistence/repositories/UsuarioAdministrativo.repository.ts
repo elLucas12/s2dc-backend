@@ -5,6 +5,7 @@ import { Like } from "typeorm";
 import { UsuarioAdministrativo } from "../entities/UsuarioAdministrativo.entity";
 import { IUsuarioAdministrativoRepository } from "src/domain/repositories/IUsuarioAdministrativo.repository";
 import { UsuarioAdministrativoModel, UsuarioAdministrativoPermissaoEnumModel } from "src/domain/entities/UsuarioAdministrativoModel.entity";
+import { ProcAceiteModel } from "src/domain/entities/ProcAceiteModel.entity";
 
 @Injectable()
 @Dependencies(getRepositoryToken(UsuarioAdministrativo))
@@ -72,6 +73,14 @@ export class UsuarioAdministrativoRepository implements IUsuarioAdministrativoRe
     return (Array.isArray(resp) ? resp.map(UsuarioAdministrativoRepository.createFromObject) : UsuarioAdministrativoRepository.createFromObject(resp));
   }
 
+  public async consultarAleatorio(): Promise<UsuarioAdministrativoModel> {
+    const randomUsuarioAdministrativo = await this.usuariosAdministrativos
+      .createQueryBuilder()
+      .orderBy("RAND()")
+      .getOne();
+    return randomUsuarioAdministrativo;
+  }
+
   /**
    * Atualiza uma instância de Usuário Administrativo por ID.
    * @param id Número de ID da instância a ser atualizada.
@@ -111,6 +120,7 @@ export class UsuarioAdministrativoRepository implements IUsuarioAdministrativoRe
     senha: string,
     nomeDeUsuario: string,
     email: string,
+    procsAceite: ProcAceiteModel[],
     criadoEm: Date,
     atualizadoEm: Date,
   }) {
@@ -124,6 +134,7 @@ export class UsuarioAdministrativoRepository implements IUsuarioAdministrativoRe
       obj.senha,
       obj.nomeDeUsuario,
       obj.email,
+      obj.procsAceite,
       obj.criadoEm,
       obj.atualizadoEm,
     );

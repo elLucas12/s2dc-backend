@@ -1,10 +1,10 @@
 import Joi from 'joi';
 
 export const CadastroClinicoRegistrarDtoSchema = Joi.object({
+  id: Joi.number().optional(),
   numeroEmergencia: Joi.string().required(),
-  procAceite: Joi.string().length(11).required(),
-  criadoEm: Joi.date().required(),
-  atualizadoEm: Joi.date().required(),
+  // criadoEm: Joi.string().isoDate(),
+  // atualizadoEm: Joi.string().isoDate(),
 }).options({
     abortEarly: false
 });

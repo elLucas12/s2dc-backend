@@ -18,8 +18,9 @@ export class RegistraUsuarioAdministrativo {
       permissao: usuarioAdministrativoRegistrado.permissao,
       nome: usuarioAdministrativoRegistrado.nome,
       senha: usuarioAdministrativoRegistrado.senha,
-      nodeDeUsuario: usuarioAdministrativoRegistrado.nomeDeUsuario,
+      nomeDeUsuario: usuarioAdministrativoRegistrado.nomeDeUsuario,
       email: usuarioAdministrativoRegistrado.email,
+      procsAceite: usuarioAdministrativoRegistrado.procsAceite,
       criadoEm: usuarioAdministrativoRegistrado.criadoEm,
       atualizadoEm: usuarioAdministrativoRegistrado.atualizadoEm,
     };

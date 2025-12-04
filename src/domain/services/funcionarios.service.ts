@@ -120,6 +120,7 @@ export class ServicoFuncionarios {
     if (!cadastroClinicoAux) {
       throw new CadastroClinicoExistenteError(`Entidade 'CadastroClinico' "${JSON.stringify(cadastroClinico)}" inexistente`);
     }
+    return cadastroClinicoAux;
   }
 
   /**

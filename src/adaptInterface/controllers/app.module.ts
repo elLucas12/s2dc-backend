@@ -53,7 +53,6 @@ import { MedicamentoController } from './Medicamento.controller';
 import { MedicamentoRegistradoRepository } from '../persistence/repositories/MedicamentoRegistrado.repository';
 import { ProcAceiteRepository } from '../persistence/repositories/ProcAceite.repository';
 import { EventoProcAceiteRepository } from '../persistence/repositories/EventoProcAceite.repository';
-import { ServicoProcAceite } from 'src/domain/services/ProcAceite.service';
 import { PermGuard } from '../autenticacao/Perm.guard';
 
 @Module({
@@ -103,7 +102,6 @@ import { PermGuard } from '../autenticacao/Perm.guard';
     ServicoAutenticacao,
     ServicoAdministrativo,
     ServicoFuncionarios,
-    ServicoProcAceite,
 
     // Repositórios de entidades
     FuncionarioRepository,

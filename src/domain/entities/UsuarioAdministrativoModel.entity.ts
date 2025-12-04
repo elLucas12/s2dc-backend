@@ -1,7 +1,9 @@
+import { ProcAceiteModel } from "./ProcAceiteModel.entity";
+
 export enum UsuarioAdministrativoPermissaoEnumModel {
-  ADM = 'Administrador',
-  REG = 'Registro Funcionários',
-  VIS = 'Visualização',
+  ADM = 'Administrador', // vê e escreve dados de funcionários e add admins.
+  REG = 'Registro Funcionários', // vê e escreve dados de funcionários
+  VIS = 'Visualização', // vê seus próprios dados (funcionário aqui)
 }
 
 export class UsuarioAdministrativoModel {
@@ -11,6 +13,7 @@ export class UsuarioAdministrativoModel {
   senha: string;
   nomeDeUsuario: string;
   email: string;
+  procsAceite: ProcAceiteModel[];
   criadoEm: Date;
   atualizadoEm: Date;
 
@@ -21,6 +24,7 @@ export class UsuarioAdministrativoModel {
     senha: string,
     nomeDeUsuario: string,
     email: string,
+    procsAceite: ProcAceiteModel[],
     criadoEm: Date,
     atualizadoEm: Date,
   ) {
@@ -30,6 +34,7 @@ export class UsuarioAdministrativoModel {
     this.senha = senha;
     this.nomeDeUsuario = nomeDeUsuario;
     this.email = email;
+    this.procsAceite = procsAceite;
     this.criadoEm = criadoEm;
     this.atualizadoEm = atualizadoEm;
   }

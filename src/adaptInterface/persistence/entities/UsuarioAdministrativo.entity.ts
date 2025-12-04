@@ -55,7 +55,7 @@ export class UsuarioAdministrativo {
     () => ProcAceite,
     (procAceite) => procAceite.usuarioAdministrativo,
     {
-      eager: false,
+      eager: true,
       nullable: true,
       cascade: true,
     },

@@ -9,6 +9,7 @@ import {
 
 import { CadastroClinico } from './CadastroClinico.entity';
 import { MedicamentoRegistrado } from './MedicamentoRegistrado.entity';
+import { DateTransformer } from '../date.transformer';
 
 @Entity('DoencaRegistrada')
 export class DoencaRegistrada {
@@ -30,15 +31,7 @@ export class DoencaRegistrada {
   @Column({
     type: 'date',
     nullable: true,
-    transformer: {
-      to(value: Date): string {
-        let x = value.toISOString();
-        return x.split('T')[0];
-      },
-      from (value: string): Date {
-        return new Date(value);
-      }
-    }
+    transformer: DateTransformer,
   })
   dataConhecimento: Date;
 

@@ -3,14 +3,23 @@ import { UsuarioAdministrativoInexistenteError } from 'src/adaptInterface/persis
 import { UsuarioAdministrativoRepository } from 'src/adaptInterface/persistence/repositories/UsuarioAdministrativo.repository';
 import { UsuarioAdministrativoModel } from '../entities/UsuarioAdministrativoModel.entity';
 import { UsuarioAdministrativoExistenteError } from 'src/adaptInterface/persistence/exceptions/UsuarioAdministrativoExistente';
+import { ProcAceiteModel } from '../entities/ProcAceiteModel.entity';
+import { ProcAceiteRepository } from 'src/adaptInterface/persistence/repositories/ProcAceite.repository';
+import { EventoProcAceiteRepository } from 'src/adaptInterface/persistence/repositories/EventoProcAceite.repository';
+import { ProcAceiteExistenteError } from 'src/adaptInterface/persistence/exceptions/ProcAceiteExistenteError';
+import { EventoProcAceiteModel } from '../entities/EventoProcAceiteModel.entity';
 
 @Injectable()
 @Dependencies(
   UsuarioAdministrativoRepository,
+  ProcAceiteRepository,
+  EventoProcAceiteRepository,
 )
 export class ServicoAdministrativo {
   constructor(
     private readonly usuarioAdministrativoRepository: UsuarioAdministrativoRepository,
+    private readonly procAceiteRepository: ProcAceiteRepository,
+    private readonly eventoProcAceiteRepository: EventoProcAceiteRepository,
   ) {}
 
   /**
@@ -52,6 +61,40 @@ export class ServicoAdministrativo {
   //   }
   //   return procAceite;
   // }
+
+  public async registrarProcAceiteInicial() {
+    const procAceite = {
+      id: undefined,
+      dataInicio: new Date(),
+      dataFim: undefined,
+    };
+
+    // Consultando um usuário administrativo aleatório para lidar com 
+    // o processo de aceite a ser registrado.
+    const randomUsuarioAdministrativo = await this.usuarioAdministrativoRepository.consultarAleatorio();
+    if (!randomUsuarioAdministrativo) {
+      throw new UsuarioAdministrativoInexistenteError(`Não existem usuários administrativos!`);
+    } 
+
+    // criando instância do processo de aceite
+    const procAceiteRegistrado = await this.procAceiteRepository.registrar({
+      dataFim: procAceite.dataFim,
+      dataInicio: procAceite.dataInicio,
+      usuarioAdministrativo: randomUsuarioAdministrativo.id,
+      eventosProcAceite: [
+        {
+          titulo: "Abertura Processo de Aceite",
+          descricao: "Evento de abertura do processo de aceite do Cadastro Clínico",
+          corpo: `Responsável pelo processo: ${randomUsuarioAdministrativo.nome}, email: ${randomUsuarioAdministrativo.email}.`,
+          data: new Date(),
+        }
+      ]
+    });
+    if (!procAceiteRegistrado) {
+      throw new ProcAceiteExistenteError(`Entidade 'ProcAceite' ID ${JSON.stringify(procAceite.id)} já existe`);
+    }
+    return procAceiteRegistrado;
+  }
 
   /**
    * Atualiza informações cadastrais de usuário administrativo passado.

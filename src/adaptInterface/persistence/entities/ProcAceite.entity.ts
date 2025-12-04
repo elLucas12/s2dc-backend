@@ -12,6 +12,7 @@ import {
 import { UsuarioAdministrativo } from './UsuarioAdministrativo.entity';
 import { CadastroClinico } from './CadastroClinico.entity';
 import { EventoProcAceite } from './EventoProcAceite.entity';
+import { DateTransformer } from '../date.transformer';
 
 @Entity('ProcAceite')
 export class ProcAceite {
@@ -21,30 +22,14 @@ export class ProcAceite {
   @Column({
     type: 'date',
     nullable: true,
-    transformer: {
-      to(value: Date): string {
-        let x = value.toISOString();
-        return x.split('T')[0];
-      },
-      from (value: string): Date {
-        return new Date(value);
-      }
-    }
+    transformer: DateTransformer,
   })
   dataFim: Date;
 
   @Column({
     type: 'date',
     nullable: false,
-    transformer: {
-      to(value: Date): string {
-        let x = value.toISOString();
-        return x.split('T')[0];
-      },
-      from (value: string): Date {
-        return new Date(value);
-      }
-    }
+    transformer: DateTransformer,
   })
   dataInicio: Date;
 

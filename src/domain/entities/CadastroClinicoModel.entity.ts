@@ -1,4 +1,3 @@
-import { FuncionarioModel } from './FuncionarioModel.entity';
 import { CirurgiaRegistradaModel } from './CirurgiaRegistradaModel.entity';
 import { DoencaRegistradaModel } from './DoencaRegistradaModel.entity';
 import { MedicamentoRegistradoModel } from './MedicamentoRegistradoModel.entity';
@@ -11,7 +10,6 @@ export class CadastroClinicoModel {
   numeroEmergencia: string;
   criadoEm: Date;
   atualizadoEm: Date;
-  funcionario: FuncionarioModel;
   procAceite: ProcAceiteModel;
   cirurgiasRegistradas: CirurgiaRegistradaModel[];
   doencasRegistradas: DoencaRegistradaModel[];

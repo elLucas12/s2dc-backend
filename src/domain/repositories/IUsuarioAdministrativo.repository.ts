@@ -9,6 +9,7 @@ export interface IUsuarioAdministrativoRepository {
   consultar(
     usuarioAdministrativo: UsuarioAdministrativoModel | any,
   ): Promise<UsuarioAdministrativoModel | UsuarioAdministrativoModel[]>;
+  consultarAleatorio(): Promise<UsuarioAdministrativoModel>;
   atualizar(
     id: number,
     usuarioAdministrativo: UsuarioAdministrativoModel | any,
