@@ -62,13 +62,11 @@ export class ServicoAdministrativo {
   //   return procAceite;
   // }
 
-  public async registrarProcAceiteInicial() {
-    const procAceite = {
-      id: undefined,
-      dataInicio: new Date(),
-      dataFim: undefined,
-    };
-
+  /**
+   * Consulta um usuário administrativo aleatório e cria um tipo objeto
+   * com as informações e estrutura de uma entidade ProcAceite, vinculando-os.
+   */
+  public async criarObjetoProcAceiteInicial() {
     // Consultando um usuário administrativo aleatório para lidar com 
     // o processo de aceite a ser registrado.
     const randomUsuarioAdministrativo = await this.usuarioAdministrativoRepository.consultarAleatorio();
@@ -76,24 +74,18 @@ export class ServicoAdministrativo {
       throw new UsuarioAdministrativoInexistenteError(`Não existem usuários administrativos!`);
     } 
 
-    // criando instância do processo de aceite
-    const procAceiteRegistrado = await this.procAceiteRepository.registrar({
-      dataFim: procAceite.dataFim,
-      dataInicio: procAceite.dataInicio,
+    const objProcAceiteInicial = {
+      dataInicio: new Date(),
+      dataFim: undefined,
       usuarioAdministrativo: randomUsuarioAdministrativo.id,
-      eventosProcAceite: [
-        {
-          titulo: "Abertura Processo de Aceite",
-          descricao: "Evento de abertura do processo de aceite do Cadastro Clínico",
-          corpo: `Responsável pelo processo: ${randomUsuarioAdministrativo.nome}, email: ${randomUsuarioAdministrativo.email}.`,
-          data: new Date(),
-        }
-      ]
-    });
-    if (!procAceiteRegistrado) {
-      throw new ProcAceiteExistenteError(`Entidade 'ProcAceite' ID ${JSON.stringify(procAceite.id)} já existe`);
+      eventosProcAceite: [{
+        titulo: "Abertura Processo de Aceite",
+        descricao: "Evento de abertura do processo de aceite do Cadastro Clínico",
+        corpo: `Responsável pelo processo: ${randomUsuarioAdministrativo.nome}, email: ${randomUsuarioAdministrativo.email}.`,
+        data: new Date(),
+      }]
     }
-    return procAceiteRegistrado;
+    return objProcAceiteInicial;
   }
 
   /**

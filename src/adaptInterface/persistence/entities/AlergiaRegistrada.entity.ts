@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 import { CadastroClinico } from './CadastroClinico.entity';
@@ -36,6 +37,11 @@ export class AlergiaRegistrada {
   @ManyToMany(
     () => MedicamentoRegistrado,
     (medicamentoRegistrado) => medicamentoRegistrado.cadastrosClinicos,
+    {
+      eager: true,
+      cascade: true,
+    }
   )
+  @JoinTable()
   medicamentosRegistrados: MedicamentoRegistrado[];
 }

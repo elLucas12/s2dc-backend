@@ -14,7 +14,7 @@ export class CadastroClinicoModel {
   cirurgiasRegistradas: CirurgiaRegistradaModel[];
   doencasRegistradas: DoencaRegistradaModel[];
   medicamentosRegistrados: MedicamentoRegistradoModel[];
-  tiposSanguineos: TipoSanguineoModel[];
+  tipoSanguineo: TipoSanguineoModel;
   alergiasRegistradas: AlergiaRegistradaModel[];
 
   constructor(
@@ -26,7 +26,7 @@ export class CadastroClinicoModel {
     cirurgiasRegistradas: CirurgiaRegistradaModel[],
     doencasRegistradas: DoencaRegistradaModel[],
     medicamentosRegistrados: MedicamentoRegistradoModel[],
-    tiposSanguineos: TipoSanguineoModel[],
+    tipoSanguineo: TipoSanguineoModel,
     alergiasRegistradas: AlergiaRegistradaModel[],
   ) {
     this.id = id;
@@ -37,7 +37,7 @@ export class CadastroClinicoModel {
     this.cirurgiasRegistradas = cirurgiasRegistradas;
     this.doencasRegistradas = doencasRegistradas;
     this.medicamentosRegistrados = medicamentosRegistrados;
-    this.tiposSanguineos = tiposSanguineos;
+    this.tipoSanguineo = tipoSanguineo;
     this.alergiasRegistradas = alergiasRegistradas;
   }
 }

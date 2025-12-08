@@ -26,11 +26,6 @@ export class TipoSanguineo {
   @OneToMany(
     () => CadastroClinico,
     (cadastroClinico) => cadastroClinico.tipoSanguineo,
-    {
-      eager: true, // carregar automaticamente com find()
-      nullable: true,
-      cascade: true,
-    },
   )
   cadastrosClinicos: CadastroClinico[];
 }

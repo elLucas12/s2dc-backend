@@ -48,12 +48,12 @@ import { AlergiaRegistradaRepository } from '../persistence/repositories/Alergia
 import { TipoSanguineoRepository } from '../persistence/repositories/TipoSanguineo.repository';
 import { DoencaController } from './Doenca.controller';
 import { AlergiaController } from './Alergia.controller';
-import { TipoSanguineoController } from './TipoSanguineo.controller';
 import { MedicamentoController } from './Medicamento.controller';
 import { MedicamentoRegistradoRepository } from '../persistence/repositories/MedicamentoRegistrado.repository';
 import { ProcAceiteRepository } from '../persistence/repositories/ProcAceite.repository';
 import { EventoProcAceiteRepository } from '../persistence/repositories/EventoProcAceite.repository';
 import { PermGuard } from '../autenticacao/Perm.guard';
+import { TipoSanguineoController } from './TipoSanguineo.controller';
 
 @Module({
   imports: [
@@ -83,8 +83,8 @@ import { PermGuard } from '../autenticacao/Perm.guard';
     CirurgiaController,
     DoencaController,
     AlergiaController,
-    TipoSanguineoController,
     MedicamentoController,
+    TipoSanguineoController
   ],
   providers: [
     // Jwt -> autenticação global requerida

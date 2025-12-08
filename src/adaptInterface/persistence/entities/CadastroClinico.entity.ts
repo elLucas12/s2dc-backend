@@ -9,6 +9,7 @@ import {
   ManyToOne,
   JoinColumn,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 import { MedicamentoRegistrado } from './MedicamentoRegistrado.entity';
@@ -26,7 +27,7 @@ export class CadastroClinico {
 
   @Column({
     type: 'varchar',
-    nullable: false,
+    nullable: true,
   })
   numeroEmergencia: string;
 
@@ -39,7 +40,12 @@ export class CadastroClinico {
   @ManyToMany(
     () => MedicamentoRegistrado,
     (medicamentoRegistrado) => medicamentoRegistrado.cadastrosClinicos,
+    {
+      eager: true,
+      nullable: true,
+    },
   )
+  @JoinTable()
   medicamentosRegistrados: MedicamentoRegistrado[];
 
   @OneToMany(
@@ -78,8 +84,13 @@ export class CadastroClinico {
   @ManyToOne(
     () => TipoSanguineo,
     (tipoSanguineo) => tipoSanguineo.cadastrosClinicos,
+    {
+      eager: true,
+      cascade: false,
+    },
   )
-  tipoSanguineo: TipoSanguineo; // TODO: fazer população inicial de valores.
+  @JoinColumn()
+  tipoSanguineo: TipoSanguineo;
 
   @OneToOne(() => ProcAceite, (procAceite) => procAceite.cadastroClinico, {
     eager: true,

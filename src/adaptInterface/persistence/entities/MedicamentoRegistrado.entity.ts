@@ -24,40 +24,24 @@ export class MedicamentoRegistrado {
   @ManyToMany(
     () => CadastroClinico,
     (cadastroClinico) => cadastroClinico.medicamentosRegistrados,
-    {
-      eager: false,
-      nullable: true,
-    },
   )
   cadastrosClinicos: CadastroClinico[];
 
   @ManyToMany(
     () => AlergiaRegistrada,
     (alergiaRegistrada) => alergiaRegistrada.medicamentosRegistrados,
-    {
-      eager: false,
-      nullable: true,
-    },
   )
   alergiasRegistradas: AlergiaRegistrada[];
 
   @ManyToMany(
     () => CirurgiaRegistrada,
     (cirurgiaRegistrada) => cirurgiaRegistrada.medicamentosRegistrados,
-    {
-      eager: false,
-      nullable: true,
-    },
   )
   cirurgiasRegistradas: CirurgiaRegistrada[];
 
   @ManyToMany(
     () => DoencaRegistrada,
     (doencaRegistrada) => doencaRegistrada.medicamentosRegistrados,
-    {
-      eager: false,
-      nullable: true,
-    },
   )
   doencasRegistradas: DoencaRegistrada[];
 }

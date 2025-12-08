@@ -7,7 +7,6 @@ import { ICadastroClinicoRepository } from "src/domain/repositories/ICadastroCli
 import { CadastroClinicoModel } from "src/domain/entities/CadastroClinicoModel.entity";
 import { ProcAceiteModel } from "src/domain/entities/ProcAceiteModel.entity";
 import { MedicamentoRegistradoModel } from "src/domain/entities/MedicamentoRegistradoModel.entity";
-import { FuncionarioModel } from "src/domain/entities/FuncionarioModel.entity";
 import { AlergiaRegistradaModel } from "src/domain/entities/AlergiaRegistradaModel.entity";
 import { CirurgiaRegistradaModel } from "src/domain/entities/CirurgiaRegistradaModel.entity";
 import { DoencaRegistradaModel } from "src/domain/entities/DoencaRegistradaModel.entity";
@@ -111,7 +110,7 @@ export class CadastroClinicoRepository implements ICadastroClinicoRepository {
     cirurgiasRegistradas: CirurgiaRegistradaModel[],
     doencasRegistradas: DoencaRegistradaModel[],
     medicamentosRegistrados: MedicamentoRegistradoModel[],
-    tiposSanguineos: TipoSanguineoModel[],
+    tipoSanguineo: TipoSanguineoModel,
   }) {
     if (!obj) {
       return obj;
@@ -125,7 +124,7 @@ export class CadastroClinicoRepository implements ICadastroClinicoRepository {
       obj.cirurgiasRegistradas,
       obj.doencasRegistradas,
       obj.medicamentosRegistrados,
-      obj.tiposSanguineos,
+      obj.tipoSanguineo,
       obj.alergiasRegistradas,
     );
   }

@@ -14,6 +14,7 @@ import { AlergiaRegistradaRepository } from 'src/adaptInterface/persistence/repo
 import { MedicamentoRegistradoRepository } from 'src/adaptInterface/persistence/repositories/MedicamentoRegistrado.repository';
 import { TipoSanguineoRepository } from 'src/adaptInterface/persistence/repositories/TipoSanguineo.repository';
 import { CirurgiaExistenteError } from 'src/adaptInterface/persistence/exceptions/CirurgiaExistenteError';
+import { TipoSanguineoFatorRhEnumModel, TipoSanguineoTipoEnumModel } from '../entities/TipoSanguineoModel.entity';
 
 @Injectable()
 @Dependencies(
@@ -73,6 +74,26 @@ export class ServicoFuncionarios {
       throw new CadastroClinicoInexistenteError(`Entidade 'CadastroClinico' ID ${id} inexistente`);
     }
     return cadastroClinico;
+  }
+
+  public async consultarIdTipoSanguineo(tipoSanguineo: {tipo: TipoSanguineoTipoEnumModel, fatorRh: TipoSanguineoFatorRhEnumModel}) {
+    return (await this.tipoSanguineoRepository.consultarParcial(tipoSanguineo)).id;
+  }
+
+  /**
+   * Retorna se um determinado funcionário (ID) tem cadastro clínico registrado.
+   * @param id Número de id do funcionário a ser consultado.
+   */
+  public async temCadastroClinico(id: number): Promise<boolean> {
+    try {
+      const resp = await this.consultarCadastroClinicoPorFuncionarioId(id);
+    } catch(error) {
+      if (error instanceof CadastroClinicoInexistenteError) {
+        return false;
+      }
+      throw error;
+    }
+    return true;
   }
 
   /**

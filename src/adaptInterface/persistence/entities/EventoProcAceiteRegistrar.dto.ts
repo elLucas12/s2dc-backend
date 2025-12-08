@@ -6,4 +6,6 @@ export const EventoProcAceiteRegistrarDtoSchema = Joi.object({
   descricao: Joi.string().max(512).required(),
   corpo: Joi.string().max(5120).required(),
   data: Joi.string().isoDate().required(),
+  criadoEm: Joi.string().isoDate().optional().strip(),
+  atualizadoEm: Joi.string().isoDate().optional().strip(),
 });

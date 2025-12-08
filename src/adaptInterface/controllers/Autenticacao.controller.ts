@@ -10,6 +10,10 @@ import { UsuarioAdministrativoValidatorPipe } from '../persistence/entities/Usua
 import { UsuarioAdministrativoRegistrarDtoSchema } from '../persistence/entities/UsuarioAdministrativoRegistrar.dto';
 import { UsuarioAdministrativoLoginDtoSchema } from '../persistence/entities/UsuarioAdministrativoLogin.dto';
 import { Public } from '../autenticacao/public.decorator';
+import { FuncionarioInexistenteError } from '../persistence/exceptions/FuncionarioInexistenteError';
+import { FuncionarioExistenteError } from '../persistence/exceptions/FuncionarioExistenteError';
+import { UsuarioAdministrativoExistenteError } from '../persistence/exceptions/UsuarioAdministrativoExistente';
+import { UsuarioAdministrativoInexistenteError } from '../persistence/exceptions/UsuarioAdministrativoInexistenteError';
 
 @Controller('autenticacao')
 @Dependencies(
@@ -30,20 +34,38 @@ export class AutenticacaoController {
   @Post('funcionario/registrar')
   @Bind(Body(new FuncionarioValidatorPipe(FuncionarioRegistrarDtoSchema)))
   async postFuncionarioRegistrar(@Body() dados: any) {
-    this.logger.log(`[Reg. FUNCIONÁRIO] => cpf: ${dados.cpf}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
-    return await this.servicoAutenticacao.registrarFuncionario(dados);
+    try {
+      this.logger.log(`[Reg. FUNCIONÁRIO] => cpf: ${dados.cpf}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
+      return await this.servicoAutenticacao.registrarFuncionario(dados);
+    } catch(error) {
+      if (error instanceof FuncionarioExistenteError) {
+        throw new UnauthorizedException(`Funcionário já existe no sistema`, {
+          cause: error,
+        });
+      }
+      throw error;
+    }
   }
 
   @Public()
   @Post('funcionario/login')
   @Bind(Body(new FuncionarioValidatorPipe(FuncionarioLoginDtoSchema)))
   async postFuncionarioLogin(@Body() dados: any) {
-    this.logger.log(`[Login FUNCIONÁRIO] => cpf: ${dados.cpf}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
-    const funcionario = await this.servicoAutenticacao.validarFuncionario({cpf: dados.cpf, senha: dados.senha});
-    if (!funcionario) {
-      throw new UnauthorizedException();
+    try {
+      this.logger.log(`[Login FUNCIONÁRIO] => cpf: ${dados.cpf}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
+      const funcionario = await this.servicoAutenticacao.validarFuncionario({cpf: dados.cpf, senha: dados.senha});
+      if (!funcionario) {
+        throw new UnauthorizedException();
+      }
+      return await this.servicoAutenticacao.loginFuncionario(funcionario);
+    } catch (error) {
+      if (error instanceof FuncionarioInexistenteError) {
+        throw new UnauthorizedException(`Funcionário não existe no sistema`, {
+          cause: error,
+        });
+      }
+      throw error;
     }
-    return await this.servicoAutenticacao.loginFuncionario(funcionario);
   }
 
   ////////////////////////////////////////
@@ -54,19 +76,37 @@ export class AutenticacaoController {
   @Post('usuarioAdministrativo/registrar')
   @Bind(Body(new UsuarioAdministrativoValidatorPipe(UsuarioAdministrativoRegistrarDtoSchema)))
   public async postUsuarioAdministrativoRegistrar(@Body() dados: any) {
-    this.logger.log(`[Reg. ADMIN] => email: ${dados.email}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
-    return await this.servicoAutenticacao.registrarUsuarioAdministrativo(dados);
+    try {
+      this.logger.log(`[Reg. ADMIN] => email: ${dados.email}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
+      return await this.servicoAutenticacao.registrarUsuarioAdministrativo(dados);
+    } catch (error) {
+      if (error instanceof UsuarioAdministrativoExistenteError) {
+        throw new UnauthorizedException(`Usuário já existe no sistema`, {
+          cause: error,
+        });
+      }
+      throw error;
+    }
   }
 
   @Public()
   @Post('usuarioAdministrativo/login')
   @Bind(Body(new UsuarioAdministrativoValidatorPipe(UsuarioAdministrativoLoginDtoSchema)))
   public async postUsuarioAdministrativoLogin(@Body() dados: any) {
-    this.logger.log(`[Login ADMIN] => email: ${dados.email}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
-    const usuarioAdministrativo = await this.servicoAutenticacao.validarUsuarioAdministrativo({email: dados.email, senha: dados.senha});
-    if (!usuarioAdministrativo) {
-      throw new UnauthorizedException();
+    try {
+      this.logger.log(`[Login ADMIN] => email: ${dados.email}, senha: ${dados.senha}... raw: ${JSON.stringify(dados)}`);
+      const usuarioAdministrativo = await this.servicoAutenticacao.validarUsuarioAdministrativo({email: dados.email, senha: dados.senha});
+      if (!usuarioAdministrativo) {
+        throw new UnauthorizedException();
+      }
+      return await this.servicoAutenticacao.loginUsuarioAdministrativo(usuarioAdministrativo);
+    } catch (error) {
+      if (error instanceof UsuarioAdministrativoInexistenteError) {
+        throw new UnauthorizedException(`Usuário não existe no sistema`, {
+          cause: error,
+        });
+      }
+      throw error;
     }
-    return await this.servicoAutenticacao.loginUsuarioAdministrativo(usuarioAdministrativo);
   }
 }

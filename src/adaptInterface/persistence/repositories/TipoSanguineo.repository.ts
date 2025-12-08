@@ -22,6 +22,15 @@ export class TipoSanguineoRepository implements ITipoSanguineoRepository {
     return TipoSanguineoRepository.createFromObject(resp);
   }
 
+  public async consultarParcial(tipoSanguineo: any): Promise<TipoSanguineoModel> {
+    const resp = await this.tiposSanguineos.createQueryBuilder('tipoSanguineo')
+      .where('tipoSanguineo.tipo = :tipo', { tipo: tipoSanguineo.tipo })
+      .andWhere('tipoSanguineo.fatorRh = :fatorRh', { fatorRh: tipoSanguineo.fatorRh })
+      .getOne();
+    console.log(resp);
+    return TipoSanguineoRepository.createFromObject(resp);
+  }
+
   public async atualizar(
     id: number,
     tipoSanguineo: TipoSanguineoModel | any,
