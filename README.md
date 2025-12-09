@@ -61,6 +61,10 @@ $ npm run populardb
 > chamado "admin" e para a adição de alguns dados para criar estabilidade
 > no uso do banco.
 
+Após isso, o sistema apresentará um **usuário administrativo** `"Mestre"` com
+a **senha padrão** `"admin"` e com o campo **email** `"admin@admin.localhost"`
+(usado para o login inicial).
+
 ## Rodar Testes
 
 ```bash

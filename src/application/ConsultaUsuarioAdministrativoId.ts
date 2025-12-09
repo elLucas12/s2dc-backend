@@ -17,7 +17,7 @@ export class ConsultaUsuarioAdministrativoId {
       permissao: usuarioAdministrativo.permissao,
       nome: usuarioAdministrativo.nome,
       senha: usuarioAdministrativo.senha,
-      nodeDeUsuario: usuarioAdministrativo.nomeDeUsuario,
+      nomeDeUsuario: usuarioAdministrativo.nomeDeUsuario,
       email: usuarioAdministrativo.email,
       procsAceite: usuarioAdministrativo.procsAceite,
       criadoEm: usuarioAdministrativo.criadoEm,

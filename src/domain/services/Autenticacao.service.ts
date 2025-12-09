@@ -44,7 +44,6 @@ export class ServicoAutenticacao {
       username: funcionario.nome,
       userperm: UsuarioAdministrativoPermissaoEnumModel.VIS,
     };
-    console.log(payload);
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -71,7 +70,6 @@ export class ServicoAutenticacao {
       username: usuarioAdministrativo.nomeDeUsuario,
       userperm: usuarioAdministrativo.permissao,
     };
-    console.log("PAYLOAD =======> ", payload);
     return {
       access_token: this.jwtService.sign(payload),
     };

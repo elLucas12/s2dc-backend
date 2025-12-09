@@ -8,7 +8,7 @@ if [[ -f ".env" ]]; then
   source .env
   mysql -h"$DB_HOST" -u"$DB_USERNAME" -p"$DB_PASSWORD" --database="$DB_NAME" << EOF
 --- Usuário Administrativo inicial ---
-INSERT INTO UsuarioAdministrativo (permissao, nome, senha, nomeDeUsuario, email) VALUES ("Administrador", "Admin. Mestre", "admin", "admin", "admin@admin.localhost");
+INSERT INTO UsuarioAdministrativo (permissao, nome, senha, nomeDeUsuario, email) VALUES ("Administrador", "Admin. Mestre", "\$2b\$12\$/C9cvSe1otZecSEwz.QQj./Um9LESLtZBx6gXqW1U6wCdfElKGp62", "admin", "admin@admin.localhost");
 
 --- Valores de Tipos Sanguineos ---
 INSERT INTO TipoSanguineo (tipo, fatorRh) VALUES ("A", "Positivo");

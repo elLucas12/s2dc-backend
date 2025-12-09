@@ -18,7 +18,7 @@ export class AtualizaUsuarioAdministrativo {
       permissao: usuarioAdministrativoAtualizado.permissao,
       nome: usuarioAdministrativoAtualizado.nome,
       senha: usuarioAdministrativoAtualizado.senha,
-      nodeDeUsuario: usuarioAdministrativoAtualizado.nomeDeUsuario,
+      nomeDeUsuario: usuarioAdministrativoAtualizado.nomeDeUsuario,
       email: usuarioAdministrativoAtualizado.email,
       procsAceite: usuarioAdministrativoAtualizado.procsAceite,
       criadoEm: usuarioAdministrativoAtualizado.criadoEm,
