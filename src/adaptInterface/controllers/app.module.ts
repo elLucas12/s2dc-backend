@@ -54,6 +54,8 @@ import { ProcAceiteRepository } from '../persistence/repositories/ProcAceite.rep
 import { EventoProcAceiteRepository } from '../persistence/repositories/EventoProcAceite.repository';
 import { PermGuard } from '../autenticacao/Perm.guard';
 import { TipoSanguineoController } from './TipoSanguineo.controller';
+import { AprovaProcAceite } from 'src/application/AprovaProcAceite';
+import { CancelaProcAceite } from 'src/application/CancelaProcAceite';
 
 @Module({
   imports: [
@@ -122,6 +124,8 @@ import { TipoSanguineoController } from './TipoSanguineo.controller';
     ConsultaFuncionarioId,
     RegistraFuncionario,
     AtualizaFuncionario,
+    AprovaProcAceite,
+    CancelaProcAceite,
   ],
 })
 export class AppModule {}

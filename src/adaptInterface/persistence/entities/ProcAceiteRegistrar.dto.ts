@@ -3,6 +3,8 @@ import { EventoProcAceiteRegistrarDtoSchema } from "./EventoProcAceiteRegistrar.
 
 export const ProcAceiteRegistrarDtoSchema = Joi.object({
   id: Joi.number().optional(),
+  cancelado: Joi.boolean().optional().strip(),
+  aprovado: Joi.boolean().optional().strip(),
   dataFim: Joi.string().isoDate().optional(),
   dataInicio: Joi.string().isoDate().required(),
   eventosProcAceite: Joi.array().items(EventoProcAceiteRegistrarDtoSchema).optional(),

@@ -8,6 +8,7 @@ import { ProcAceiteRepository } from 'src/adaptInterface/persistence/repositorie
 import { EventoProcAceiteRepository } from 'src/adaptInterface/persistence/repositories/EventoProcAceite.repository';
 import { ProcAceiteExistenteError } from 'src/adaptInterface/persistence/exceptions/ProcAceiteExistenteError';
 import { EventoProcAceiteModel } from '../entities/EventoProcAceiteModel.entity';
+import { ProcAceiteInexistenteError } from 'src/adaptInterface/persistence/exceptions/ProcAceiteInexistenteError';
 
 @Injectable()
 @Dependencies(
@@ -112,5 +113,35 @@ export class ServicoAdministrativo {
       throw new UsuarioAdministrativoExistenteError(`Entidade 'UsuarioAdministrativo' ID ${usuarioAdministrativo.id} já existe no sistema`);
     }
     return await this.usuarioAdministrativoRepository.registrar(usuarioAdministrativo);
+  }
+
+  /**
+   * Realiza o cancelamento de um procAceite existente.
+   * 
+   * @param id Número de id do procAceite a ser cancelado.
+   * @returns objeto da entidade procAceite construido.
+   */
+  public async cancelarProcAceite(id: number) {
+    const procAceiteAux = await this.procAceiteRepository.consultarId(id);
+    if (!procAceiteAux) {
+      throw new ProcAceiteInexistenteError('Processo não existe no sistema');
+    }
+    procAceiteAux.cancelado = true;
+    return await this.procAceiteRepository.atualizar(procAceiteAux.id, procAceiteAux);
+  }
+
+  /**
+   * Aprova no sistema um procAceite existente.
+   * 
+   * @param id Número de id do procAceite a ser aprovado.
+   * @returns objeto da entidade procAceite construido.
+   */
+  public async aprovarProcAceite(id: number) {
+    const procAceiteAux = await this.procAceiteRepository.consultarId(id);
+    if (!procAceiteAux) {
+      throw new ProcAceiteInexistenteError('Processo não existe no sistema');
+    }
+    procAceiteAux.aprovado = true;
+    return await this.procAceiteRepository.atualizar(procAceiteAux.id, procAceiteAux);
   }
 }

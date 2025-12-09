@@ -10,12 +10,17 @@ import { UsuarioAdministrativoExistenteError } from '../persistence/exceptions/U
 import { UsuarioAdministrativoAtualizarDtoSchema } from '../persistence/entities/UsuarioAdministrativoAtualizar.dto';
 import { Perms } from '../autenticacao/perms.decorator';
 import { UsuarioAdministrativoPermissaoEnumModel } from 'src/domain/entities/UsuarioAdministrativoModel.entity';
+import { AprovaProcAceite } from 'src/application/AprovaProcAceite';
+import { CancelaProcAceite } from 'src/application/CancelaProcAceite';
+import { ProcAceiteInexistenteError } from '../persistence/exceptions/ProcAceiteInexistenteError';
 
 @Controller('usuarioAdministrativo')
 @Dependencies(
   ConsultaUsuarioAdministrativoId,
   RegistraUsuarioAdministrativo,
   AtualizaUsuarioAdministrativo,
+  AprovaProcAceite,
+  CancelaProcAceite,
 )
 export class AdministrativoController {
   private logger: Logger = new Logger(AdministrativoController.name);
@@ -24,6 +29,8 @@ export class AdministrativoController {
     private readonly consultaUsuarioAdministrativoId: ConsultaUsuarioAdministrativoId,
     private readonly registraUsuarioAdministrativo: RegistraUsuarioAdministrativo,
     private readonly atualizaUsuarioAdministrativo: AtualizaUsuarioAdministrativo,
+    private readonly aprovaProcAceite: AprovaProcAceite,
+    private readonly cancelaProcAceite: CancelaProcAceite,
   ) {}
 
   @Perms(
@@ -142,6 +149,46 @@ export class AdministrativoController {
     } catch(error) {
       if (error instanceof UsuarioAdministrativoInexistenteError) {
         throw new NotFoundException('Usuário Admin. não existe', {
+          cause: error,
+        });
+      }
+      throw error;
+    }
+  }
+
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
+  @Get('procAceite/:id/cancelar')
+  @Bind(Param('id', ParseIntPipe))
+  async getCancelarProcAceite(@Param('id') id: number) {
+    try {
+      this.logger.log(`[GET] CANCELAR procAceite ID ${id}`);
+      return await this.cancelaProcAceite.run(id);
+    } catch (error) {
+      if (error instanceof ProcAceiteInexistenteError) {
+        throw new NotFoundException('Processo não existe', {
+          cause: error,
+        });
+      }
+      throw error;
+    }
+  }
+
+  @Perms(
+    UsuarioAdministrativoPermissaoEnumModel.ADM,
+    UsuarioAdministrativoPermissaoEnumModel.REG,
+  )
+  @Get('procAceite/:id/aprovar')
+  @Bind(Param('id', ParseIntPipe))
+  async getAprovarProcAceite(@Param('id') id: number) {
+    try {
+      this.logger.log(`[GET] APROVAR procAceite ID ${id}`);
+      return await this.aprovaProcAceite.run(id);
+    } catch (error) {
+      if (error instanceof ProcAceiteInexistenteError) {
+        throw new NotFoundException('Processo não existe', {
           cause: error,
         });
       }

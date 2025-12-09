@@ -20,6 +20,20 @@ export class ProcAceite {
   id: number;
 
   @Column({
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
+  cancelado: boolean = false;
+
+  @Column({
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
+  aprovado: boolean = false;
+
+  @Column({
     type: 'date',
     nullable: true,
     transformer: DateTransformer,

@@ -40,6 +40,8 @@ export class ProcAceiteRepository implements IProcAceiteRepository {
 
   static createFromObject(obj: {
     id: number,
+    cancelado: boolean,
+    aprovado: boolean,
     dataFim: Date,
     dataInicio: Date,
     criadoEm: Date,
@@ -51,6 +53,8 @@ export class ProcAceiteRepository implements IProcAceiteRepository {
     }
     return new ProcAceiteModel(
       obj.id,
+      obj.cancelado,
+      obj.aprovado,
       obj.dataFim,
       obj.dataInicio,
       obj.criadoEm,
