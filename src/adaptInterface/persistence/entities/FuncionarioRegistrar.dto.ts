@@ -8,6 +8,7 @@ export const FuncionarioRegistrarDtoSchema = Joi.object({
   ctps: Joi.string().length(16).required(),
   senha: Joi.string().max(64).required(),
   sexo: Joi.string().valid(...Object.values(FuncionarioSexoEnumModel)),
+  cadastrosClinicos: Joi.optional().strip(),
 }).options({
     abortEarly: false
 });
