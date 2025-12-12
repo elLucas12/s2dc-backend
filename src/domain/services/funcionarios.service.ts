@@ -15,6 +15,11 @@ import { MedicamentoRegistradoRepository } from 'src/adaptInterface/persistence/
 import { TipoSanguineoRepository } from 'src/adaptInterface/persistence/repositories/TipoSanguineo.repository';
 import { CirurgiaExistenteError } from 'src/adaptInterface/persistence/exceptions/CirurgiaExistenteError';
 import { TipoSanguineoFatorRhEnumModel, TipoSanguineoTipoEnumModel } from '../entities/TipoSanguineoModel.entity';
+import * as bcrypt from 'bcrypt';
+import { ChaveAlfanumericaInvalidaError } from 'src/adaptInterface/persistence/exceptions/ChaveAlfanumericaInvalidaError';
+import { LinkPublicoDesativado } from 'src/adaptInterface/persistence/exceptions/LinkPublicoDesativado';
+import { CadastroNaoAprovadoError } from 'src/adaptInterface/persistence/exceptions/CadastroNaoAprovadoError';
+import { CadastroCanceladoError } from 'src/adaptInterface/persistence/exceptions/CadastroCanceladoError';
 
 @Injectable()
 @Dependencies(
@@ -103,7 +108,7 @@ export class ServicoFuncionarios {
    */
   public async consultarCadastroClinicoPorFuncionarioId(id: number) {
     const funcionario = await this.consultarFuncionarioId(id);
-    const cadastroClinico = funcionario.cadastrosClinicos.at(-1);
+    const cadastroClinico = funcionario.cadastrosClinicos.at(0);
     if (!cadastroClinico) {
       throw new CadastroClinicoInexistenteError(`Entidade 'CadastroClinico' de 'Funcionário' ID ${id} não existe`);
     }
@@ -155,5 +160,44 @@ export class ServicoFuncionarios {
       throw new CirurgiaExistenteError(`Entidade 'Cirurgia' ID ${cirurgia.id} já existe no sistema`);
     }
     return await this.cirurgiaRegistradaRepository.registrar(cirurgia);
+  }
+
+  /**
+   * Consulta se o link público está ativo em determinado funcionário.
+   * @param id Número de ID do funcionário.
+   * @returns Booleano *linkPublicoAtivo* do cadastro ativo do funcionário.
+   */
+  public async consultaLinkPublico(id: number): Promise<boolean> {
+    const cad = await this.consultarCadastroClinicoPorFuncionarioId(id);
+    console.log("CADASTROO =========================");
+    console.log(cad);
+    if (!cad.procAceite.aprovado) {
+      throw new CadastroNaoAprovadoError(`Cadastro ID ${cad.id} de F.ID ${id} não aprovado`);
+    } else if (cad.procAceite.cancelado) {
+      throw new CadastroCanceladoError(`Cadastro ID ${cad.id} de F.ID ${id} cancelado`);
+    }
+    return cad.linkPublicoAtivo;
+  }
+
+  /**
+   * Retorna determinado funcionário se chave alfanumérica correta, senão erro.
+   * @param id Número de ID do funcionário.
+   * @param chaveAlfanumerica Chave Alfanumérica do link público.
+   * @returns Info pública de cadastro clínico ativo do funcionário.
+   */
+  public async ChaveAlfanumericaValida(id: number, chaveAlfanumerica: string) {
+    const hash = (await bcrypt.hash(id.toString(), 12)).substring(0, 5);
+    const funcionarioAlvo = await this.consultarFuncionarioId(id);
+    const cad = funcionarioAlvo.cadastrosClinicos.at(0);
+    if (cad && !cad.linkPublicoAtivo) {
+      throw new LinkPublicoDesativado(`Link público para F.ID ${id} está desativado`);
+    }
+    if (!cad) {
+      throw new CadastroClinicoInexistenteError(`Entidade 'CadastroClinico' de 'Funcionário' ID ${id} não existe`);
+    }
+    if (funcionarioAlvo && await bcrypt.compare(chaveAlfanumerica, hash)) {
+      return funcionarioAlvo;
+    }
+    throw new ChaveAlfanumericaInvalidaError(`Chave Alfanumérica para F.ID '${id}' é inválida`);
   }
 }

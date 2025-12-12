@@ -26,7 +26,8 @@ export class ServicoAutenticacao {
 
   public async registrarFuncionario(funcionario: any): Promise<FuncionarioModel | undefined> {
     funcionario.senha = await bcrypt.hash(funcionario.senha, 12);
-    return await this.servicoFuncionarios.registrarFuncionario(funcionario);
+    const chaveAlfanumerica = (await bcrypt.hash(funcionario.nome.toString(), 12)).substring(0, 5);
+    return await this.servicoFuncionarios.registrarFuncionario({...funcionario, chaveAlfanumerica});
   }
 
   public async validarFuncionario(funcionario: {cpf: string, senha: string}): Promise<any> {

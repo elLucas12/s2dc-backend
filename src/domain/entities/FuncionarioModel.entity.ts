@@ -12,6 +12,7 @@ export class FuncionarioModel {
   cpf: string;
   ctps: string;
   sexo: FuncionarioSexoEnumModel;
+  chaveAlfanumerica: string;
   cadastrosClinicos: CadastroClinicoModel[];
   senha: string;
 
@@ -21,6 +22,7 @@ export class FuncionarioModel {
     cpf: string,
     ctps: string,
     sexo: FuncionarioSexoEnumModel,
+    chaveAlfanumerica: string,
     cadastrosClinicos: CadastroClinicoModel[],
     senha: string,
   ) {
@@ -29,6 +31,7 @@ export class FuncionarioModel {
     this.cpf = cpf;
     this.ctps = ctps;
     this.sexo = sexo;
+    this.chaveAlfanumerica = chaveAlfanumerica;
     this.cadastrosClinicos = cadastrosClinicos;
     this.senha = senha;
   }

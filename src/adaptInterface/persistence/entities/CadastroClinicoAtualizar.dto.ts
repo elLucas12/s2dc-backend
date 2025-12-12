@@ -7,6 +7,7 @@ import { TipoSanguineoRegistrarDtoSchema } from './TipoSanguineoRegistrar.dto';
 export const CadastroClinicoAtualizarDtoSchema = Joi.object({
   id: Joi.number().required(),
   numeroEmergencia: Joi.string().required(),
+  linkPublicoAtivo: Joi.boolean().optional().strip(), // não controla
   procAceite: Joi.optional().strip(), // não deve controlar procAceite (esse valor deve ser cortado)
   cirurgiasRegistradas: Joi.array().items(CirurgiaRegistradaRegistrarDtoSchema).optional(),
   doencasRegistradas: Joi.array().items(DoencaRegistradaRegistrarDtoSchema).optional(),

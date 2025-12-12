@@ -8,6 +8,7 @@ import { MedicamentoRegistradoRegistrarDtoSchema } from './MedicamentoRegistrado
 export const CadastroClinicoRegistrarDtoSchema = Joi.object({
   id: Joi.number().optional(),
   numeroEmergencia: Joi.string().required(),
+  linkPublicoAtivo: Joi.boolean().optional().strip(), // não controla
   procAceite: Joi.optional().strip(), // não deve controlar procAceite (esse valor deve ser cortado)
   cirurgiasRegistradas: Joi.array().items(CirurgiaRegistradaRegistrarDtoSchema).optional(),
   doencasRegistradas: Joi.array().items(DoencaRegistradaRegistrarDtoSchema).optional(),

@@ -49,6 +49,7 @@ export class AtualizaFuncionario {
       cpf: funcionarioAtualizado.cpf,
       ctps: funcionarioAtualizado.ctps,
       sexo: funcionarioAtualizado.sexo,
+      chaveAlfanumerica: funcionarioAtualizado.chaveAlfanumerica,
       cadastrosClinicos: funcionarioAtualizado.cadastrosClinicos,
     };
   }

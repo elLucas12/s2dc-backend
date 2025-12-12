@@ -56,6 +56,8 @@ import { PermGuard } from '../autenticacao/Perm.guard';
 import { TipoSanguineoController } from './TipoSanguineo.controller';
 import { AprovaProcAceite } from 'src/application/AprovaProcAceite';
 import { CancelaProcAceite } from 'src/application/CancelaProcAceite';
+import { ConsultaLinkPublico } from 'src/application/ConsultaLinkPublico';
+import { ConsultaInformacoesPublicas } from 'src/application/ConsultaInformacoesPublicas';
 
 @Module({
   imports: [
@@ -126,6 +128,8 @@ import { CancelaProcAceite } from 'src/application/CancelaProcAceite';
     AtualizaFuncionario,
     AprovaProcAceite,
     CancelaProcAceite,
+    ConsultaLinkPublico,
+    ConsultaInformacoesPublicas,
   ],
 })
 export class AppModule {}

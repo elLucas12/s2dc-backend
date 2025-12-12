@@ -103,6 +103,7 @@ export class CadastroClinicoRepository implements ICadastroClinicoRepository {
   static createFromObject(obj: {
     id: number,
     numeroEmergencia: string,
+    linkPublicoAtivo: boolean,
     criadoEm: Date,
     atualizadoEm: Date,
     procAceite: ProcAceiteModel,
@@ -118,6 +119,7 @@ export class CadastroClinicoRepository implements ICadastroClinicoRepository {
     return new CadastroClinicoModel(
       obj.id,
       obj.numeroEmergencia,
+      obj.linkPublicoAtivo,
       obj.criadoEm,
       obj.atualizadoEm,
       obj.procAceite,

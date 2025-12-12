@@ -5,6 +5,7 @@ import { CadastroClinicoRegistrarDtoSchema } from './CadastroClinicoRegistrar.dt
 export const FuncionarioAtualizarDtoSchema = Joi.object({
   id: Joi.number().required(),
   nome: Joi.string().required(),
+  chaveAlfanumerica: Joi.string().optional().strip(),
   cpf: Joi.string().length(11).required(),
   ctps: Joi.string().length(16).required(),
   senha: Joi.string().max(64).required(),

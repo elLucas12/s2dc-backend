@@ -8,6 +8,7 @@ import { AlergiaRegistradaModel } from './AlergiaRegistradaModel.entity';
 export class CadastroClinicoModel {
   id: number;
   numeroEmergencia: string;
+  linkPublicoAtivo: boolean;
   criadoEm: Date;
   atualizadoEm: Date;
   procAceite: ProcAceiteModel;
@@ -20,6 +21,7 @@ export class CadastroClinicoModel {
   constructor(
     id: number,
     numeroEmergencia: string,
+    linkPublicoAtivo: boolean,
     criadoEm: Date,
     atualizadoEm: Date,
     procAceite: ProcAceiteModel,
@@ -31,6 +33,7 @@ export class CadastroClinicoModel {
   ) {
     this.id = id;
     this.numeroEmergencia = numeroEmergencia;
+    this.linkPublicoAtivo = linkPublicoAtivo;
     this.criadoEm = criadoEm;
     this.atualizadoEm = atualizadoEm;
     this.procAceite = procAceite;

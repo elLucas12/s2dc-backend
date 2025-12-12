@@ -19,6 +19,7 @@ export class ConsultaFuncionarioId {
       cpf: funcionario.cpf,
       ctps: funcionario.ctps,
       sexo: funcionario.sexo,
+      chaveAlfanumerica: funcionario.chaveAlfanumerica,
       cadastrosClinicos: funcionario.cadastrosClinicos,
     };
   }

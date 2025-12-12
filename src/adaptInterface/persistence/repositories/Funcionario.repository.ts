@@ -116,6 +116,7 @@ export class FuncionarioRepository implements IFuncionarioRepository {
     cpf: string,
     ctps: string,
     sexo: FuncionarioSexoEnumModel,
+    chaveAlfanumerica: string,
     cadastrosClinicos: CadastroClinicoModel[],
     senha: string,
   }) {
@@ -128,6 +129,7 @@ export class FuncionarioRepository implements IFuncionarioRepository {
       obj.cpf,
       obj.ctps,
       obj.sexo,
+      obj.chaveAlfanumerica,
       obj.cadastrosClinicos,
       obj.senha,
     );

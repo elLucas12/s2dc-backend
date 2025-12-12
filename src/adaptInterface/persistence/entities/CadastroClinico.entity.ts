@@ -31,6 +31,13 @@ export class CadastroClinico {
   })
   numeroEmergencia: string;
 
+  @Column({
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
+  linkPublicoAtivo: boolean = false;
+
   @CreateDateColumn()
   criadoEm: Date;
 

@@ -19,6 +19,7 @@ export class RegistraFuncionario {
       cpf: funcionarioRegistrado.cpf,
       ctps: funcionarioRegistrado.ctps,
       sexo: funcionarioRegistrado.sexo,
+      chaveAlfanumerica: funcionarioRegistrado.chaveAlfanumerica,
       cadastrosClinicos: funcionarioRegistrado.cadastrosClinicos,
     };
   }

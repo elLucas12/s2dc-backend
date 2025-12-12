@@ -36,6 +36,12 @@ export class Funcionario {
     type: 'varchar',
     nullable: false,
   })
+  chaveAlfanumerica: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+  })
   senha: string;
 
   @OneToMany(() => CadastroClinico, (cadastroClinico) => cadastroClinico.funcionario, {
